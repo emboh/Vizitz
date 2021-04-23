@@ -11,11 +11,11 @@ namespace Vizitz.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly DataBaseContext _context;
+        private readonly DatabaseContext _context;
 
         private readonly DbSet<T> _db;
 
-        public GenericRepository(DataBaseContext context)
+        public GenericRepository(DatabaseContext context)
         {
             _context = context;
 
