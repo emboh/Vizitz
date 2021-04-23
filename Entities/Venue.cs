@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Vizitz.IEntities;
 
 namespace Vizitz.Entities
 {
-    public class Venue
+    public class Venue : IHasTimestamps
     {
         public int Id { get; set; }
 
@@ -24,10 +25,12 @@ namespace Vizitz.Entities
 
         public bool? IsActive { get; set; }
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime? Added { get; set; }
 
-        public DateTime? UpdatedAt { get; set; }
-        
+        public DateTime? Modified { get; set; }
+
+        public DateTime? Deleted { get; set; }
+
         [ForeignKey(nameof(Proprietor))]
         public int ProprietorId { get; set; }
         public User Proprietor { get; set; }

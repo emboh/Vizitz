@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Vizitz.IEntities;
 
 namespace Vizitz.Entities
 {
-    public class User
+    public class User : IHasTimestamps
     {
         public const string RoleAdmin = "Admin";
 
@@ -31,9 +32,11 @@ namespace Vizitz.Entities
 
         public bool? IsActive { get; set; }
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime? Added { get; set; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? Modified { get; set; }
+
+        public DateTime? Deleted { get; set; }
 
         // Visitor
         public virtual IList<Visit> Visits { get; set; }

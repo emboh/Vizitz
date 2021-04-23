@@ -12,9 +12,9 @@ namespace Vizitz.Models
 
         public VisitorDTO Visitor { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime? Added { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? Modified { get; set; }
     }
 
     public class CreateVisitDTO

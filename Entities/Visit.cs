@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Vizitz.IEntities;
 
 namespace Vizitz.Entities
 {
-    public class Visit
+    public class Visit : IHasTimestamps
     {
         public int Id { get; set; }
 
@@ -25,8 +26,10 @@ namespace Vizitz.Entities
 
         public bool? IsValid { get; set; }
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime? Added { get; set; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? Modified { get; set; }
+
+        public DateTime? Deleted { get; set; }
     }
 }
