@@ -10,38 +10,30 @@ namespace Vizitz.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DataBaseContext _context;
+        private readonly DatabaseContext _context;
 
         private bool _disposedValue;
 
-        //private IGenericRepository<Schedule> _schedules;
+        private IGenericRepository<Schedule> _schedules;
 
-        //private IGenericRepository<User> _users;
+        private IGenericRepository<User> _users;
 
-        //private IGenericRepository<Venue> _venues;
+        private IGenericRepository<Venue> _venues;
 
-        //private IGenericRepository<Visit> _visits;
+        private IGenericRepository<Visit> _visits;
 
-        public UnitOfWork(DataBaseContext context)
+        public UnitOfWork(DatabaseContext context)
         {
             _context = context;
         }
 
-        //public IGenericRepository<Schedule> Schedules => _schedules ??= new GenericRepository<Schedule>(_context);
+        public IGenericRepository<Schedule> Schedules => _schedules ??= new GenericRepository<Schedule>(_context);
 
-        //public IGenericRepository<User> Users => _users ??= new GenericRepository<User>(_context);
+        public IGenericRepository<User> Users => _users ??= new GenericRepository<User>(_context);
 
-        //public IGenericRepository<Venue> Venues => _venues ??= new GenericRepository<Venue>(_context);
+        public IGenericRepository<Venue> Venues => _venues ??= new GenericRepository<Venue>(_context);
 
-        //public IGenericRepository<Visit> Visits => _visits ??= new GenericRepository<Visit>(_context);
-
-        public IGenericRepository<Schedule> Schedules => new GenericRepository<Schedule>(_context);
-
-        public IGenericRepository<User> Users => new GenericRepository<User>(_context);
-
-        public IGenericRepository<Venue> Venues => new GenericRepository<Venue>(_context);
-
-        public IGenericRepository<Visit> Visits => new GenericRepository<Visit>(_context);
+        public IGenericRepository<Visit> Visits => _visits ??= new GenericRepository<Visit>(_context);
 
         public async Task Save()
         {
