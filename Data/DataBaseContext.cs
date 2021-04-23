@@ -4,15 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using Bogus.Extensions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Vizitz.Entities;
+using Vizitz.IEntities;
 using Vizitz.Models;
 
 namespace Vizitz.Data
 {
-    public class DataBaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext
     {
-        public DataBaseContext (DbContextOptions<DataBaseContext> options)
+        public DatabaseContext (DbContextOptions<DatabaseContext> options)
             : base(options)
         {
         }

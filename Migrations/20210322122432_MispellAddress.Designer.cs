@@ -9,7 +9,7 @@ using Vizitz.Data;
 
 namespace Vizitz.Migrations
 {
-    [DbContext(typeof(DataBaseContext))]
+    [DbContext(typeof(DatabaseContext))]
     [Migration("20210322122432_MispellAddress")]
     partial class MispellAddress
     {

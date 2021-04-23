@@ -38,7 +38,7 @@ namespace Vizitz
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Vizitz", Version = "v1" });
             });
 
-            services.AddDbContext<DataBaseContext>(options =>
+            services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DataBaseContext")
                 )
