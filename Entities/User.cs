@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Vizitz.IEntities;
 
 namespace Vizitz.Entities
 {
-    public class User : IHasTimestamps
+    public class User : IdentityUser<string>, IHasTimestamps
     {
         public const string RoleAdmin = "Admin";
 
@@ -12,7 +14,8 @@ namespace Vizitz.Entities
 
         public const string RoleProprietor = "Proprietor";
 
-        public int Id { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public override int Id { get; set; }
 
         public string Identification { get; set; }
 
@@ -21,12 +24,6 @@ namespace Vizitz.Entities
         public string Address { get; set; }
 
         public string Phone { get; set; }
-
-        public string Email { get; set; }
-
-        //public string Username { get; set; }
-
-        //public string Password { get; set; }
 
         //public string Avatar { get; set; }
 

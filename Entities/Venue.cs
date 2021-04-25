@@ -7,6 +7,7 @@ namespace Vizitz.Entities
 {
     public class Venue : IHasTimestamps
     {
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -31,8 +32,8 @@ namespace Vizitz.Entities
 
         public DateTime? Deleted { get; set; }
 
-        [ForeignKey(nameof(Proprietor))]
-        public int ProprietorId { get; set; }
+        //[ForeignKey(nameof(Proprietor))]
+        //public Guid ProprietorId { get; set; }
         public User Proprietor { get; set; }
 
         public virtual IList<Schedule> Schedules { get; set; }

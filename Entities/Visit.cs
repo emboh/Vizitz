@@ -6,14 +6,15 @@ namespace Vizitz.Entities
 {
     public class Visit : IHasTimestamps
     {
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey(nameof(Schedule))]
-        public int ScheduleId { get; set; }
+        //[ForeignKey(nameof(Schedule))]
+        //public Guid ScheduleId { get; set; }
         public Schedule Schedule { get; set; }
 
-        [ForeignKey(nameof(Visitor))]
-        public int VisitorId { get; set; }
+        //[ForeignKey(nameof(Visitor))]
+        //public Guid VisitorId { get; set; }
         public User Visitor { get; set; }
 
         public DateTime StartedAt { get; set; }

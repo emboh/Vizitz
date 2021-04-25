@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Vizitz.Data;
 using Vizitz.IRepository;
 using Vizitz.Repository;
+using Microsoft.AspNetCore.Identity;
+using Vizitz.IdentityUserCustom;
 
 namespace Vizitz
 {
@@ -30,7 +32,6 @@ namespace Vizitz
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -43,6 +44,19 @@ namespace Vizitz
                     Configuration.GetConnectionString("DataBaseContext")
                 )
             );
+
+            services.AddAuthentication();
+
+            services.ConfigureIdentity();
+
+            //services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(
+            //    identity =>
+            //    {
+            //        identity.User.RequireUniqueEmail = true;
+            //        identity.Password.RequiredLength = 8;
+            //    })
+            //    .AddEntityFrameworkStores<DatabaseContext>()
+            //    .AddDefaultTokenProviders();
 
             services.AddCors(options => 
                 options.AddPolicy("AllowAll", builder => 

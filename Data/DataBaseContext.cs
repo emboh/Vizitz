@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using Bogus.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -13,7 +14,7 @@ using Vizitz.Models;
 
 namespace Vizitz.Data
 {
-    public class DatabaseContext : IdentityDbContext
+    public class DatabaseContext : IdentityDbContext<User, IdentityRole, string>
     {
         public DatabaseContext (DbContextOptions<DatabaseContext> options)
             : base(options)
@@ -22,13 +23,11 @@ namespace Vizitz.Data
             ChangeTracker.Tracked += UpdateTimestamps;
         }
 
-        public DbSet<Schedule> Schedule { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
 
-        public DbSet<User> User { get; set; }
+        public DbSet<Venue> Venues { get; set; }
 
-        public DbSet<Venue> Venue { get; set; }
-
-        public DbSet<Visit> Visit { get; set; }
+        public DbSet<Visit> Visits { get; set; }
 
         private static void UpdateTimestamps(object sender, EntityEntryEventArgs e)
         {
@@ -56,22 +55,43 @@ namespace Vizitz.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>(b =>
+            {
+                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
+            });
+
+            modelBuilder.Entity<Schedule>(b =>
+            {
+                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
+            });
+
+            modelBuilder.Entity<Venue>(b =>
+            {
+                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
+            });
+
+            modelBuilder.Entity<Visit>(b =>
+            {
+                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
+            });
+
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            var ids = 1;
-            var proprietors = new Faker<ProprietorDTO>()
-                .RuleFor(m => m.Id, f => ids++)
+            var proprietors = new Faker<User>()
+                .RuleFor(m => m.Id, f => Guid.NewGuid().ToString())
                 .RuleFor(m => m.Name, f => f.Name.FullName())
                 .RuleFor(m => m.Address, f => f.Address.FullAddress())
                 .RuleFor(m => m.Phone, f => f.Phone.PhoneNumber())
                 .RuleFor(m => m.Email, f => f.Internet.Email())
-                .RuleFor(m => m.IsActive, f => true);
+                .RuleFor(m => m.IsActive, f => true)
+                .RuleFor(m => m.Added, f => f.Date.Past())
+                .RuleFor(m => m.Modified, f => f.Date.Recent());
 
             modelBuilder
-                .Entity<ProprietorDTO>()
+                .Entity<User>()
                 .HasData(proprietors.GenerateBetween(10, 10));
         }
     }

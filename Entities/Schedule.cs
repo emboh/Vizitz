@@ -7,10 +7,11 @@ namespace Vizitz.Entities
 {
     public class Schedule : IHasTimestamps
     {
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey(nameof(Venue))]
-        public int VenueId { get; set; }
+        //[ForeignKey(nameof(Venue))]
+        //public Guid VenueId { get; set; }
         public Venue Venue { get; set; }
 
         public DateTime StartedAt { get; set; }
