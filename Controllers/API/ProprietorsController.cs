@@ -12,7 +12,7 @@ using Vizitz.Entities;
 using Vizitz.IRepository;
 using Vizitz.Models;
 
-namespace Vizitz.Controllers
+namespace Vizitz.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
