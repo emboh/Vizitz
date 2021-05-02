@@ -8,7 +8,7 @@ namespace Vizitz.Models
 {
     public class ScheduleDTO : CreateScheduleDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public VenueDTO Venue { get; set; }
 
@@ -41,6 +41,6 @@ namespace Vizitz.Models
         public bool IsValid { get; set; }
 
         [Required]
-        public int VenueId { get; set; }
+        public string VenueId { get; set; }
     }
 }

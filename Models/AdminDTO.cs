@@ -6,22 +6,18 @@ namespace Vizitz.Models
 {
     public class AdminDTO : CreateAdminDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public DateTime? Added { get; set; }
 
         public DateTime? Modified { get; set; }
     }
 
-    public class CreateAdminDTO
+    public class CreateAdminDTO : LoginUserDTO
     {
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
-
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
 
         [DefaultValue(true)]
         public bool? IsActive { get; set; }

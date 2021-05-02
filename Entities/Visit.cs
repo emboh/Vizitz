@@ -7,7 +7,7 @@ namespace Vizitz.Entities
     public class Visit : IHasTimestamps
     {
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         //[ForeignKey(nameof(Schedule))]
         //public Guid ScheduleId { get; set; }

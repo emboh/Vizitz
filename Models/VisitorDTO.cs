@@ -9,7 +9,7 @@ namespace Vizitz.Models
 {
     public class VisitorDTO : CreateVisitorDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         //public new string Avatar { get; set; }
 
@@ -20,7 +20,7 @@ namespace Vizitz.Models
         public virtual IList<VisitDTO> Visits { get; set; }
     }
 
-    public class CreateVisitorDTO
+    public class CreateVisitorDTO : LoginUserDTO
     {
         //[DefaultValue(null)]
         //[FileExtensions(Extensions = "jpg,jpeg,gif,png")]
@@ -42,10 +42,6 @@ namespace Vizitz.Models
         [Phone]
         [DefaultValue(null)]
         public string Phone { get; set; }
-
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
 
         [DefaultValue(true)]
         public bool? IsActive { get; set; }

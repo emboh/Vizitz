@@ -7,7 +7,7 @@ namespace Vizitz.Models
 {
     public class VenueDTO : CreateVenueDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public ProprietorDTO Proprietor { get; set; }
 
@@ -51,6 +51,6 @@ namespace Vizitz.Models
         public bool? IsActive { get; set; }
 
         [Required]
-        public int ProprietorId { get; set; }
+        public string ProprietorId { get; set; }
     }
 }

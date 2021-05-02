@@ -7,7 +7,7 @@ namespace Vizitz.Models
 {
     public class ProprietorDTO : CreateProprietorDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public DateTime? Added { get; set; }
 
@@ -16,8 +16,12 @@ namespace Vizitz.Models
         public virtual IList<VenueDTO> Venues { get; set; }
     }
 
-    public class CreateProprietorDTO
+    public class CreateProprietorDTO : LoginUserDTO
     {
+        [Required]
+        [StringLength(16, MinimumLength = 16)]
+        public string Identification { get; set; }
+
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
@@ -29,10 +33,6 @@ namespace Vizitz.Models
         [Phone]
         [DefaultValue(null)]
         public string Phone { get; set; }
-
-        [EmailAddress]
-        [DefaultValue(null)]
-        public string Email { get; set; }
 
         [DefaultValue(true)]
         public bool? IsActive { get; set; }
