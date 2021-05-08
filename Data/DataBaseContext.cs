@@ -55,6 +55,8 @@ namespace Vizitz.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new RoleConfiguration);
+
             modelBuilder.Entity<User>(b =>
             {
                 b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
