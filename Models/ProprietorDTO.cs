@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Vizitz.Entities;
+using Vizitz.Models.User;
 
 namespace Vizitz.Models
 {
-    public class ProprietorDTO : CreateProprietorDTO
+    public class ProprietorDTO : UpdateProprietorDTO
     {
         public string Id { get; set; }
 
@@ -14,27 +16,31 @@ namespace Vizitz.Models
         public DateTime? Modified { get; set; }
 
         public virtual IList<VenueDTO> Venues { get; set; }
+
+        //public ICollection<string> Roles { get; set; }
     }
 
-    public class CreateProprietorDTO : LoginUserDTO
+    public class UpdateProprietorDTO : RegisterDTO
     {
-        [Required]
+        [EmailAddress]
+        public override string Email { get; set; }
+
+        [StringLength(255, MinimumLength = 6)]
+        public override string Password { get; set; }
+
         [StringLength(16, MinimumLength = 16)]
-        public string Identification { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string Name { get; set; }
+        public override string Identification { get; set; }
 
         [StringLength(255)]
-        [DefaultValue(null)]
-        public string Address { get; set; }
+        public override string Name { get; set; }
+
+        [StringLength(255)]
+        public override string Address { get; set; }
 
         [Phone]
-        [DefaultValue(null)]
-        public string Phone { get; set; }
+        public override string Phone { get; set; }
 
-        [DefaultValue(true)]
+        [Range(typeof(bool), "false", "true")]
         public bool? IsActive { get; set; }
     }
 }

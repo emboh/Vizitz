@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Vizitz.Models.User;
 
 namespace Vizitz.Models
 {
@@ -13,7 +14,7 @@ namespace Vizitz.Models
         public DateTime? Modified { get; set; }
     }
 
-    public class CreateAdminDTO : LoginUserDTO
+    public class CreateAdminDTO : LoginDTO
     {
         [Required]
         [StringLength(255)]

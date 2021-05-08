@@ -12,10 +12,10 @@ namespace Vizitz.Data
             CreateMap<User, CreateAdminDTO>().ReverseMap();
 
             CreateMap<User, ProprietorDTO>().ReverseMap();
-            CreateMap<User, CreateProprietorDTO>().ReverseMap();
+            CreateMap<User, UpdateProprietorDTO>().ReverseMap();
 
             CreateMap<User, VisitorDTO>().ReverseMap();
-            CreateMap<User, CreateVisitorDTO>().ReverseMap();
+            CreateMap<User, UpdateVisitorDTO>().ReverseMap();
 
             CreateMap<Venue, VenueDTO>().ReverseMap();
             CreateMap<Venue, CreateVenueDTO>().ReverseMap();
