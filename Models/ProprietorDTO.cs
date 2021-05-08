@@ -16,8 +16,6 @@ namespace Vizitz.Models
         public DateTime? Modified { get; set; }
 
         public virtual IList<VenueDTO> Venues { get; set; }
-
-        //public ICollection<string> Roles { get; set; }
     }
 
     public class UpdateProprietorDTO : RegisterDTO

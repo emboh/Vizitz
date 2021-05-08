@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Vizitz.Entities;
 
-namespace Vizitz.Models.User
+namespace Vizitz.Models // TODO : add to different namespace
 {
     public class RegisterDTO : LoginDTO
     {
@@ -20,5 +22,8 @@ namespace Vizitz.Models.User
         [Phone]
         [DefaultValue(null)]
         public virtual string Phone { get; set; }
+
+        // TODO : add rule for roles
+        public ICollection<string> Roles { get; set; }
     }
 }
