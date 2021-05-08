@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Vizitz.Annotations;
 using Vizitz.Entities;
-using Vizitz.Models.User;
+using Vizitz.Models.Account;
 
 namespace Vizitz.Models
 {

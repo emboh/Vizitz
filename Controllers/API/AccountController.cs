@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Vizitz.Entities;
 using Vizitz.Models;
+using Vizitz.Models.Account;
 
 namespace Vizitz.Controllers.API
 {

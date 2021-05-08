@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Vizitz.Models // TODO : add to different namespace
+namespace Vizitz.Models.Account
 {
     public class LoginDTO
     {

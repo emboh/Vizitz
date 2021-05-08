@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Vizitz.Models.User;
+using Vizitz.Models.Account;
 
 namespace Vizitz.Models
 {

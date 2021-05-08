@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Vizitz.Entities;
 
-namespace Vizitz.Models // TODO : add to different namespace
+namespace Vizitz.Models.Account
 {
     public class RegisterDTO : LoginDTO
     {
