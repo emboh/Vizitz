@@ -39,9 +39,9 @@ namespace Vizitz.Controllers.API
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] VisitorDTO visitorDTO)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
-            _logger.LogInformation($"Registration for {visitorDTO.Email}");
+            _logger.LogInformation($"Registration for {registerDTO.Email}");
 
             if (!ModelState.IsValid)
             {
@@ -50,14 +50,23 @@ namespace Vizitz.Controllers.API
 
             try
             {
-                User user = _mapper.Map<User>(visitorDTO);
+                var user = _mapper.Map<User>(registerDTO);
 
-                var result = await _userManager.CreateAsync(user);
+                user.UserName = registerDTO.Email;
+
+                var result = await _userManager.CreateAsync(user, registerDTO.Password);
 
                 if (!result.Succeeded)
                 {
-                    return BadRequest($"User registration attempt failed");
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+
+                    return BadRequest(ModelState);
                 }
+
+                await _userManager.AddToRolesAsync(user, registerDTO.Roles);
 
                 return Accepted();
             }
