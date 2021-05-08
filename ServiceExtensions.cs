@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Vizitz.Data;
 using Vizitz.Entities;
-using Vizitz.IdentityUserCustom;
 
 namespace Vizitz
 {
@@ -16,13 +15,7 @@ namespace Vizitz
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
 
-            builder.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders(); ;
-
-        //    builder.AddIdentity<ApplicationUser, Role>()
-        //.AddEntityFrameworkStores<DatabaseContext, Guid>()
-        //.AddDefaultTokenProviders()
-        //.AddUserStore<UserStore<ApplicationUser, Role, DatabaseContext, Guid>>()
-        //.AddRoleStore<RoleStore<Role, DatabaseContext, Guid>>();
+            builder.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
         }
     }
 }

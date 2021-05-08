@@ -49,15 +49,6 @@ namespace Vizitz
 
             services.ConfigureIdentity();
 
-            //services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(
-            //    identity =>
-            //    {
-            //        identity.User.RequireUniqueEmail = true;
-            //        identity.Password.RequiredLength = 8;
-            //    })
-            //    .AddEntityFrameworkStores<DatabaseContext>()
-            //    .AddDefaultTokenProviders();
-
             services.AddCors(options => 
                 options.AddPolicy("AllowAll", builder => 
                     builder.AllowAnyOrigin()
