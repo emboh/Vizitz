@@ -16,7 +16,6 @@ using Vizitz.Data;
 using Vizitz.IRepository;
 using Vizitz.Repository;
 using Microsoft.AspNetCore.Identity;
-using Vizitz.IdentityUserCustom;
 
 namespace Vizitz
 {
