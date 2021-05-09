@@ -21,9 +21,9 @@ namespace Vizitz.Models.Account
 
         [Phone]
         [DefaultValue(null)]
-        public virtual string Phone { get; set; }
+        public virtual string PhoneNumber { get; set; }
 
-        // TODO : add rule for roles
-        public ICollection<string> Roles { get; set; }
+        [Required]
+        public virtual ICollection<string> Roles { get; set; }
     }
 }

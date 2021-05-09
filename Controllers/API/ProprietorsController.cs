@@ -47,7 +47,7 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ProprietorDTO>> GetUser(string id)
+        public async Task<ActionResult<ProprietorDTO>> GetUser(Guid id)
         {
             User proprietor = await _unitOfWork.Users.Get(q => q.Id == id, new List<string> { "Venues" });
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Vizitz.Entities;
 using Vizitz.Models;
+using Vizitz.Models.Account;
 
 namespace Vizitz.Data
 {
@@ -8,6 +9,8 @@ namespace Vizitz.Data
     {
         public MapInitializer()
         {
+            CreateMap<User, RegisterDTO>().ReverseMap();
+
             CreateMap<User, AdminDTO>().ReverseMap();
             CreateMap<User, CreateAdminDTO>().ReverseMap();
 

@@ -11,11 +11,13 @@ namespace Vizitz
     {
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            IdentityBuilder builder = services.AddIdentityCore<User>(q => { q.User.RequireUniqueEmail = true; });
+            IdentityBuilder builder = services
+                .AddIdentityCore<User>(q => { q.User.RequireUniqueEmail = true; })
+                .AddRoles<IdentityRole<Guid>>();
 
-            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
+            builder.AddEntityFrameworkStores<DatabaseContext>();
 
-            builder.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
+            builder.AddDefaultTokenProviders();
         }
     }
 }

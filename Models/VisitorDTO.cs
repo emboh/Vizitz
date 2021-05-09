@@ -40,12 +40,10 @@ namespace Vizitz.Models
         [DefaultValue(null)]
         public override string Address { get; set; }
 
-        [Phone]
-        [DefaultValue(null)]
-        public override string Phone { get; set; }
-
         [Range(typeof(bool), "false", "true")]
         public bool? IsActive { get; set; }
+
+        public override ICollection<string> Roles { get; set; }
 
         //[DefaultValue(null)]
         //[FileExtensions(Extensions = "jpg,jpeg,gif,png")]

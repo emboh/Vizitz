@@ -19,20 +19,20 @@ namespace Vizitz.Controllers.API
     {
         private readonly UserManager<User> _userManager;
 
-        private readonly SignInManager<User> _signInManager;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 
         private readonly ILogger<ProprietorsController> _logger;
 
         private readonly IMapper _mapper;
 
         public AccountController(UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            RoleManager<IdentityRole<Guid>> roleManager,
             ILogger<ProprietorsController> logger, 
             IMapper mapper)
         {
             _userManager = userManager;
 
-            _signInManager = signInManager;
+            _roleManager = roleManager;
 
             _logger = logger;
 
@@ -40,13 +40,21 @@ namespace Vizitz.Controllers.API
         }
 
         [HttpPost]
+        [Route("Register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
             _logger.LogInformation($"Registration for {registerDTO.Email}");
 
-            if (!ModelState.IsValid)
+            // TODO : move role validation to RegisterDTO
+            foreach (var role in registerDTO.Roles)
             {
-                return BadRequest(ModelState);
+                if (!Vizitz.Entities.User.Roles.Contains(role, StringComparer.OrdinalIgnoreCase))
+                {
+                    return Problem($"Role {role} doesn't exist", statusCode: StatusCodes.Status400BadRequest);
+                }
             }
 
             try
@@ -67,9 +75,10 @@ namespace Vizitz.Controllers.API
                     return BadRequest(ModelState);
                 }
 
+                // TODO : use transaction to handle 2 operation
                 await _userManager.AddToRolesAsync(user, registerDTO.Roles);
 
-                return Accepted();
+                return Ok();
             }
             catch (Exception exception)
             {

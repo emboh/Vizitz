@@ -14,7 +14,7 @@ using Vizitz.Models;
 
 namespace Vizitz.Data
 {
-    public class DatabaseContext : IdentityDbContext<User, IdentityRole, string>
+    public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public DatabaseContext (DbContextOptions<DatabaseContext> options)
             : base(options)
@@ -55,46 +55,34 @@ namespace Vizitz.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
-            modelBuilder.Entity<User>(b =>
-            {
-                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
-            });
+            modelBuilder.ApplyConfiguration(new VenueConfiguration());
 
-            modelBuilder.Entity<Schedule>(b =>
-            {
-                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
-            });
+            modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
 
-            modelBuilder.Entity<Venue>(b =>
-            {
-                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
-            });
-
-            modelBuilder.Entity<Visit>(b =>
-            {
-                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
-            });
+            modelBuilder.ApplyConfiguration(new VenueConfiguration());
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            var proprietors = new Faker<User>()
-                .RuleFor(m => m.Id, f => Guid.NewGuid().ToString())
-                .RuleFor(m => m.Name, f => f.Name.FullName())
-                .RuleFor(m => m.Address, f => f.Address.FullAddress())
-                .RuleFor(m => m.Phone, f => f.Phone.PhoneNumber())
-                .RuleFor(m => m.Email, f => f.Internet.Email())
-                .RuleFor(m => m.IsActive, f => true)
-                .RuleFor(m => m.Added, f => f.Date.Past())
-                .RuleFor(m => m.Modified, f => f.Date.Recent());
+            //var proprietors = new Faker<User>()
+            //    .RuleFor(m => m.Id, f => Guid.NewGuid())
+            //    .RuleFor(m => m.Name, f => f.Name.FullName())
+            //    .RuleFor(m => m.Address, f => f.Address.FullAddress())
+            //    .RuleFor(m => m.Phone, f => f.Phone.PhoneNumber())
+            //    .RuleFor(m => m.Email, f => f.Internet.Email())
+            //    .RuleFor(m => m.IsActive, f => true)
+            //    .RuleFor(m => m.Added, f => f.Date.Past())
+            //    .RuleFor(m => m.Modified, f => f.Date.Recent());
 
-            modelBuilder
-                .Entity<User>()
-                .HasData(proprietors.GenerateBetween(10, 10));
+            //modelBuilder
+            //    .Entity<User>()
+            //    .HasData(proprietors.GenerateBetween(10, 10));
         }
     }
 }

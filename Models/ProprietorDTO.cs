@@ -35,10 +35,9 @@ namespace Vizitz.Models
         [StringLength(255)]
         public override string Address { get; set; }
 
-        [Phone]
-        public override string Phone { get; set; }
-
         [Range(typeof(bool), "false", "true")]
         public bool? IsActive { get; set; }
+
+        public override ICollection<string> Roles { get; set; }
     }
 }
