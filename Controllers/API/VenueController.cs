@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -68,6 +69,8 @@ namespace Vizitz.Controllers.API
             return _mapper.Map<VenueDTO>(venue);
         }
 
+        [Authorize(Roles = "Administrator,Proprietor")]
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -83,6 +86,8 @@ namespace Vizitz.Controllers.API
             return CreatedAtRoute(nameof(GetVenue), new { id = venue.Id }, _mapper.Map<VenueDTO>(venue));
         }
 
+        // TODO : add policies only venue owner can edit
+        [Authorize(Roles = "Administrator,Proprietor")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -108,6 +113,8 @@ namespace Vizitz.Controllers.API
             return NoContent();
         }
 
+        // TODO : add policies only venue owner can delete
+        [Authorize(Roles = "Administrator,Proprietor")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

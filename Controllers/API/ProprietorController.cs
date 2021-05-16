@@ -99,7 +99,7 @@ namespace Vizitz.Controllers.API
             return _mapper.Map<ProprietorDTO>(proprietor);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -128,6 +128,7 @@ namespace Vizitz.Controllers.API
             return CreatedAtRoute(nameof(GetProprietor), new { id = proprietor.Id }, _mapper.Map<ProprietorDTO>(proprietor));
         }
 
+        [Authorize(Roles = "Administrator,Proprietor")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -152,6 +153,8 @@ namespace Vizitz.Controllers.API
 
             return NoContent();
         }
+
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
