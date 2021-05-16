@@ -116,6 +116,8 @@ namespace Vizitz
                 c.DefaultModelsExpandDepth(-1);
             });
 
+            app.ConfigureExceptionHandler();
+
             app.UseHttpsRedirection();
 
             app.UseCors("AllowAll");

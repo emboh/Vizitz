@@ -78,33 +78,25 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ProprietorDTO>> GetProprietor(Guid id)
         {
-            try
-            {
-                User proprietor = await _userManager.Users
+            User proprietor = await _userManager.Users
                     .Include(u => u.UserRoles)
                     .ThenInclude(ur => ur.Role)
                     .FirstOrDefaultAsync(u => u.Id == id);
 
-                if (proprietor == null)
-                {
-                    return NotFound();
-                }
-
-                var roles = await _userManager.GetRolesAsync(proprietor);
-
-                if (!roles.Contains(Role.Proprietor))
-                {
-                    return Problem($"User Role is not {Role.Proprietor}.", statusCode: StatusCodes.Status400BadRequest);
-                }
-
-                return _mapper.Map<ProprietorDTO>(proprietor);
-            }
-            catch (Exception exception)
+            if (proprietor == null)
             {
-                _logger.LogError(exception, $"Problem in the {nameof(GetProprietor)}");
-
-                return Problem($"Problem in the {nameof(GetProprietor)}", statusCode: StatusCodes.Status500InternalServerError);
+                return NotFound();
             }
+
+            var roles = await _userManager.GetRolesAsync(proprietor);
+
+            // TODO : check roles inside include operation
+            if (!roles.Contains(Role.Proprietor))
+            {
+                return Problem($"User Role is not {Role.Proprietor}.", statusCode: StatusCodes.Status400BadRequest);
+            }
+
+            return _mapper.Map<ProprietorDTO>(proprietor);
         }
 
         [Authorize]
@@ -115,34 +107,49 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ProprietorDTO>> PostProprietor([FromBody] CreateProprietorDTO proprietorDTO)
         {
-            try
+            User proprietor = _mapper.Map<User>(proprietorDTO);
+
+            proprietor.UserName = proprietorDTO.Email;
+
+            var result = await _userManager.CreateAsync(proprietor, proprietorDTO.Password);
+
+            if (!result.Succeeded)
             {
-                User proprietor = _mapper.Map<User>(proprietorDTO);
-
-                proprietor.UserName = proprietorDTO.Email;
-
-                var result = await _userManager.CreateAsync(proprietor, proprietorDTO.Password);
-
-                if (!result.Succeeded)
+                foreach (var error in result.Errors)
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(error.Code, error.Description);
-                    }
-
-                    return BadRequest(ModelState);
+                    ModelState.AddModelError(error.Code, error.Description);
                 }
 
-                await _userManager.AddToRoleAsync(proprietor, Role.Proprietor);
-
-                return CreatedAtRoute(nameof(GetProprietor), new { id = proprietor.Id }, _mapper.Map<ProprietorDTO>(proprietor));
+                return BadRequest(ModelState);
             }
-            catch (Exception exception)
+
+            await _userManager.AddToRoleAsync(proprietor, Role.Proprietor);
+
+            return CreatedAtRoute(nameof(GetProprietor), new { id = proprietor.Id }, _mapper.Map<ProprietorDTO>(proprietor));
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteProprietor(Guid id)
+        {
+            User proprietor = await _userManager.Users
+                    .Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                    .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (proprietor == null)
             {
-                _logger.LogError(exception, $"Problem in the {nameof(PostProprietor)}");
+                _logger.LogError($"Invalid attempt in {nameof(DeleteProprietor)}");
 
-                return Problem($"Problem in the {nameof(PostProprietor)}", statusCode: StatusCodes.Status500InternalServerError);
+                return NotFound();
             }
+
+            await _userManager.DeleteAsync(proprietor);
+
+            return NoContent();
         }
     }
 }

@@ -65,35 +65,26 @@ namespace Vizitz.Controllers.API
                 }
             }
 
-            try
+            var user = _mapper.Map<User>(registerDTO);
+
+            user.UserName = registerDTO.Email;
+
+            var result = await _userManager.CreateAsync(user, registerDTO.Password);
+
+            if (!result.Succeeded)
             {
-                var user = _mapper.Map<User>(registerDTO);
-
-                user.UserName = registerDTO.Email;
-
-                var result = await _userManager.CreateAsync(user, registerDTO.Password);
-
-                if (!result.Succeeded)
+                foreach (var error in result.Errors)
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(error.Code, error.Description);
-                    }
-
-                    return BadRequest(ModelState);
+                    ModelState.AddModelError(error.Code, error.Description);
                 }
 
-                // TODO : use transaction to handle 2 operation
-                await _userManager.AddToRolesAsync(user, registerDTO.Roles);
-
-                return Ok(_mapper.Map<UserDTO>(user));
+                return BadRequest(ModelState);
             }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, $"Problem in the {nameof(Register)}");
 
-                return Problem($"Problem in the {nameof(Register)}", statusCode: StatusCodes.Status500InternalServerError);
-            }
+            // TODO : use transaction to handle 2 operation
+            await _userManager.AddToRolesAsync(user, registerDTO.Roles);
+
+            return Ok(_mapper.Map<UserDTO>(user));
         }
 
         [HttpPost]
@@ -105,21 +96,12 @@ namespace Vizitz.Controllers.API
         {
             _logger.LogInformation($"Login attempt for {loginDTO.Email}");
 
-            try
+            if (!await _authManager.ValidateUser(loginDTO))
             {
-                if (!await _authManager.ValidateUser(loginDTO))
-                {
-                    return Unauthorized();
-                }
-
-                return Ok(new { Token = await _authManager.CreateToken() });
+                return Unauthorized();
             }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, $"Problem in the {nameof(Login)}");
 
-                return Problem($"Problem in the {nameof(Login)}", statusCode: StatusCodes.Status500InternalServerError);
-            }
+            return Ok(new { Token = await _authManager.CreateToken() });
         }
     }
 }

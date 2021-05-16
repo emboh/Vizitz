@@ -44,18 +44,9 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<VenueDTO>>> GetVenue([FromQuery] RequestParams requestParams)
         {
-            try
-            {
-                var venues = await _unitOfWork.Venues.GetPagedList(requestParams);
+            var venues = await _unitOfWork.Venues.GetPagedList(requestParams);
 
-                return Ok(_mapper.Map<IList<VenueDTO>>(venues));
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, $"Problem in the {nameof(GetVenue)}");
-
-                return Problem($"Problem in the {nameof(GetVenue)}", statusCode: StatusCodes.Status500InternalServerError);
-            }
+            return Ok(_mapper.Map<IList<VenueDTO>>(venues));
         }
 
         [HttpGet("{id}", Name = nameof(GetVenue))]
@@ -65,25 +56,16 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<VenueDTO>> GetVenue(Guid id)
         {
-            try
+            Venue venue = await _unitOfWork.Venues.Get(q => q.Id == id);
+
+            if (venue == null)
             {
-                Venue venue = await _unitOfWork.Venues.Get(q => q.Id == id);
+                _logger.LogError($"Invalid attempt in {nameof(GetVenue)}");
 
-                if (venue == null)
-                {
-                    _logger.LogError($"Invalid attempt in {nameof(GetVenue)}");
-
-                    return NotFound();
-                }
-
-                return _mapper.Map<VenueDTO>(venue);
+                return NotFound();
             }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, $"Problem in the {nameof(GetVenue)}");
 
-                return Problem($"Problem in the {nameof(GetVenue)}", statusCode: StatusCodes.Status500InternalServerError);
-            }
+            return _mapper.Map<VenueDTO>(venue);
         }
 
         [HttpPost]
@@ -92,22 +74,13 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ProprietorDTO>> PostVenue([FromBody] CreateVenueDTO venueDTO)
         {
-            try
-            {
-                Venue venue = _mapper.Map<Venue>(venueDTO);
+            Venue venue = _mapper.Map<Venue>(venueDTO);
 
-                await _unitOfWork.Venues.Insert(venue);
+            await _unitOfWork.Venues.Insert(venue);
 
-                await _unitOfWork.Save();
+            await _unitOfWork.Save();
 
-                return CreatedAtRoute(nameof(GetVenue), new { id = venue.Id }, _mapper.Map<VenueDTO>(venue));
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, $"Problem in the {nameof(PostVenue)}");
-
-                return Problem($"Problem in the {nameof(PostVenue)}", statusCode: StatusCodes.Status500InternalServerError);
-            }
+            return CreatedAtRoute(nameof(GetVenue), new { id = venue.Id }, _mapper.Map<VenueDTO>(venue));
         }
 
         [HttpPut("{id}")]
@@ -117,31 +90,22 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PutVenue(Guid id, [FromBody] UpdateVenueDTO venueDTO)
         {
-            try
+            Venue venue = await _unitOfWork.Venues.Get(q => q.Id == id);
+
+            if (venue == null)
             {
-                Venue venue = await _unitOfWork.Venues.Get(q => q.Id == id);
+                _logger.LogError($"Invalid attempt in {nameof(PutVenue)}");
 
-                if (venue == null)
-                {
-                    _logger.LogError($"Invalid attempt in {nameof(PutVenue)}");
-
-                    return NotFound();
-                }
-
-                _mapper.Map(venueDTO, venue);
-
-                _unitOfWork.Venues.Update(venue);
-
-                await _unitOfWork.Save();
-
-                return NoContent();
+                return NotFound();
             }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, $"Problem in the {nameof(PostVenue)}");
 
-                return Problem($"Problem in the {nameof(PostVenue)}", statusCode: StatusCodes.Status500InternalServerError);
-            }
+            _mapper.Map(venueDTO, venue);
+
+            _unitOfWork.Venues.Update(venue);
+
+            await _unitOfWork.Save();
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -151,29 +115,20 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteVenue(Guid id)
         {
-            try
+            Venue venue = await _unitOfWork.Venues.Get(q => q.Id == id);
+
+            if (venue == null)
             {
-                Venue venue = await _unitOfWork.Venues.Get(q => q.Id == id);
+                _logger.LogError($"Invalid attempt in {nameof(DeleteVenue)}");
 
-                if (venue == null)
-                {
-                    _logger.LogError($"Invalid attempt in {nameof(DeleteVenue)}");
-
-                    return NotFound();
-                }
-
-                await _unitOfWork.Venues.Delete(id);
-
-                await _unitOfWork.Save();
-
-                return NoContent();
+                return NotFound();
             }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, $"Problem in the {nameof(PostVenue)}");
 
-                return Problem($"Problem in the {nameof(PostVenue)}", statusCode: StatusCodes.Status500InternalServerError);
-            }
+            await _unitOfWork.Venues.Delete(id);
+
+            await _unitOfWork.Save();
+
+            return NoContent();
         }
     }
 }
