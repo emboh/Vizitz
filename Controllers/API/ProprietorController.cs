@@ -128,6 +128,30 @@ namespace Vizitz.Controllers.API
             return CreatedAtRoute(nameof(GetProprietor), new { id = proprietor.Id }, _mapper.Map<ProprietorDTO>(proprietor));
         }
 
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> PutProprietor(Guid id, [FromBody] UpdateProprietorDTO proprietorDTO)
+        {
+            User proprietor = await _userManager.FindByIdAsync(id.ToString());
+
+            Venue venue = await _unitOfWork.Venues.Get(q => q.Id == id);
+
+            if (proprietor == null)
+            {
+                _logger.LogError($"Invalid attempt in {nameof(PutProprietor)}");
+
+                return NotFound();
+            }
+
+            _mapper.Map(proprietorDTO, proprietor);
+
+            await _userManager.UpdateAsync(proprietor);
+
+            return NoContent();
+        }
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
