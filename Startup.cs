@@ -11,11 +11,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.EntityFrameworkCore;
 using Vizitz.Data;
 using Vizitz.IRepository;
 using Vizitz.Repository;
 using Microsoft.AspNetCore.Identity;
+using Vizitz.Services;
 
 namespace Vizitz
 {
@@ -36,7 +38,36 @@ namespace Vizitz
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Vizitz", Version = "v1" });
-            });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                            },
+                            new List<string>()
+                        }
+                    });
+                });
 
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(
@@ -48,8 +79,10 @@ namespace Vizitz
 
             services.ConfigureIdentity();
 
-            services.AddCors(options => 
-                options.AddPolicy("AllowAll", builder => 
+            services.ConfigureJWT(Configuration);
+
+            services.AddCors(options =>
+                options.AddPolicy("AllowAll", builder =>
                     builder.AllowAnyOrigin()
                             .AllowAnyMethod()
                             .AllowAnyHeader()
@@ -59,6 +92,8 @@ namespace Vizitz
             services.AddAutoMapper(typeof(MapInitializer));
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IAuthManager, AuthManager>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling =
@@ -86,6 +121,8 @@ namespace Vizitz
             app.UseCors("AllowAll");
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
