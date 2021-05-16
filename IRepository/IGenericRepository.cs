@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Vizitz.Models.Paginate;
+using X.PagedList;
 
 namespace Vizitz.IRepository
 {
@@ -14,10 +16,10 @@ namespace Vizitz.IRepository
             List<string> includes = null
          );
 
-        //Task<IPagedList<T>> GetPagedList(
-        //    RequestParams requestParams,
-        //    List<string> includes = null
-        //);
+        Task<IPagedList<T>> GetPagedList(
+            RequestParams requestParams,
+            List<string> includes = null
+        );
 
         Task<T> Get(Expression<Func<T, bool>> expression, List<string> includes = null);
 
@@ -25,7 +27,7 @@ namespace Vizitz.IRepository
 
         Task InsertRange(IEnumerable<T> entities);
 
-        Task Delete(int id);
+        Task Delete(Guid id);
 
         void DeleteRange(IEnumerable<T> entities);
 

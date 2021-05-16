@@ -6,6 +6,8 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Vizitz.Data;
 using Vizitz.IRepository;
+using Vizitz.Models.Paginate;
+using X.PagedList;
 
 namespace Vizitz.Repository
 {
@@ -62,22 +64,22 @@ namespace Vizitz.Repository
             return await query.AsNoTracking().ToListAsync();
         }
 
-        //public async Task<IPagedList<T>> GetPagedList(RequestParams requestParams, List<string> includes = null)
-        //{
-        //    IQueryable<T> query = _db;
+        public async Task<IPagedList<T>> GetPagedList(RequestParams requestParams, List<string> includes = null)
+        {
+            IQueryable<T> query = _db;
 
 
-        //    if (includes != null)
-        //    {
-        //        foreach (var includePropery in includes)
-        //        {
-        //            query = query.Include(includePropery);
-        //        }
-        //    }
+            if (includes != null)
+            {
+                foreach (var includePropery in includes)
+                {
+                    query = query.Include(includePropery);
+                }
+            }
 
-        //    return await query.AsNoTracking()
-        //        .ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
-        //}
+            return await query.AsNoTracking()
+                .ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
+        }
 
         public async Task Insert(T entity)
         {
@@ -89,7 +91,7 @@ namespace Vizitz.Repository
             await _db.AddRangeAsync(entities);
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Guid id)
         {
             var entity = await _db.FindAsync(id);
 
