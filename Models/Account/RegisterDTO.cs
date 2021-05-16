@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Vizitz.Entities;
 
 namespace Vizitz.Models.Account
 {
@@ -23,7 +22,7 @@ namespace Vizitz.Models.Account
         [DefaultValue(null)]
         public virtual string PhoneNumber { get; set; }
 
-        [Required]
-        public virtual ICollection<string> Roles { get; set; }
+        [MinLength(1)]
+        public virtual IList<string> Roles { get; set; }
     }
 }

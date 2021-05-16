@@ -14,7 +14,16 @@ using Vizitz.Models;
 
 namespace Vizitz.Data
 {
-    public class DatabaseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+    public class DatabaseContext : IdentityDbContext<
+        User, 
+        Role, 
+        Guid,
+        IdentityUserClaim<Guid>, 
+        UserRole, 
+        IdentityUserLogin<Guid>,
+        IdentityRoleClaim<Guid>, 
+        IdentityUserToken<Guid>
+        >
     {
         public DatabaseContext (DbContextOptions<DatabaseContext> options)
             : base(options)

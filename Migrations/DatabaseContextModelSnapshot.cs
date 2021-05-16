@@ -19,57 +19,6 @@ namespace Vizitz.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b6f768d5-6d77-4814-8a93-a679f97b6448"),
-                            ConcurrencyStamp = "b6f768d5-6d77-4814-8a93-a679f97b6448",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = new Guid("1fe125cd-2a32-4a6e-aed9-7ff821627b38"),
-                            ConcurrencyStamp = "1fe125cd-2a32-4a6e-aed9-7ff821627b38",
-                            Name = "Proprietor",
-                            NormalizedName = "PROPRIETOR"
-                        },
-                        new
-                        {
-                            Id = new Guid("889ef87a-ba2c-4e6e-b71c-03786981e437"),
-                            ConcurrencyStamp = "889ef87a-ba2c-4e6e-b71c-03786981e437",
-                            Name = "Visitor",
-                            NormalizedName = "VISITOR"
-                        });
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -137,21 +86,6 @@ namespace Vizitz.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -171,11 +105,62 @@ namespace Vizitz.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Vizitz.Entities.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b6f768d5-6d77-4814-8a93-a679f97b6448"),
+                            ConcurrencyStamp = "b6f768d5-6d77-4814-8a93-a679f97b6448",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("1fe125cd-2a32-4a6e-aed9-7ff821627b38"),
+                            ConcurrencyStamp = "1fe125cd-2a32-4a6e-aed9-7ff821627b38",
+                            Name = "Proprietor",
+                            NormalizedName = "PROPRIETOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("889ef87a-ba2c-4e6e-b71c-03786981e437"),
+                            ConcurrencyStamp = "889ef87a-ba2c-4e6e-b71c-03786981e437",
+                            Name = "Visitor",
+                            NormalizedName = "VISITOR"
+                        });
+                });
+
             modelBuilder.Entity("Vizitz.Entities.Schedule", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Added")
                         .HasColumnType("datetime2");
@@ -201,8 +186,8 @@ namespace Vizitz.Migrations
                     b.Property<DateTime>("StartedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("VenueId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid?>("VenueId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -298,11 +283,26 @@ namespace Vizitz.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Vizitz.Entities.UserRole", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
             modelBuilder.Entity("Vizitz.Entities.Venue", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Added")
                         .HasColumnType("datetime2");
@@ -349,8 +349,9 @@ namespace Vizitz.Migrations
 
             modelBuilder.Entity("Vizitz.Entities.Visit", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Added")
                         .HasColumnType("datetime2");
@@ -373,8 +374,8 @@ namespace Vizitz.Migrations
                     b.Property<int>("Rate")
                         .HasColumnType("int");
 
-                    b.Property<string>("ScheduleId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid?>("ScheduleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartedAt")
                         .HasColumnType("datetime2");
@@ -393,7 +394,7 @@ namespace Vizitz.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("Vizitz.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -418,21 +419,6 @@ namespace Vizitz.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Vizitz.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("Vizitz.Entities.User", null)
@@ -450,6 +436,25 @@ namespace Vizitz.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Venue");
+                });
+
+            modelBuilder.Entity("Vizitz.Entities.UserRole", b =>
+                {
+                    b.HasOne("Vizitz.Entities.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Vizitz.Entities.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Vizitz.Entities.Venue", b =>
@@ -479,6 +484,11 @@ namespace Vizitz.Migrations
                     b.Navigation("Visitor");
                 });
 
+            modelBuilder.Entity("Vizitz.Entities.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("Vizitz.Entities.Schedule", b =>
                 {
                     b.Navigation("Visits");
@@ -486,6 +496,8 @@ namespace Vizitz.Migrations
 
             modelBuilder.Entity("Vizitz.Entities.User", b =>
                 {
+                    b.Navigation("UserRoles");
+
                     b.Navigation("Venues");
 
                     b.Navigation("Visits");

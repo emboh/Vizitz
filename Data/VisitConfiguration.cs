@@ -10,6 +10,8 @@ namespace Vizitz.Data
         {
             builder.Property(b => b.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.HasQueryFilter(q => q.Deleted == null);
         }
     }
 }

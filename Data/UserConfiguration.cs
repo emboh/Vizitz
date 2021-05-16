@@ -10,6 +10,13 @@ namespace Vizitz.Data
         {
             builder.Property(b => b.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.HasMany(e => e.UserRoles)
+                .WithOne(e => e.User)
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
+
+            builder.HasQueryFilter(q => q.Deleted == null);
         }
     }
 }

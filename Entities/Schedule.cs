@@ -7,12 +7,7 @@ namespace Vizitz.Entities
 {
     public class Schedule : IHasTimestamps
     {
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
-
-        //[ForeignKey(nameof(Venue))]
-        //public Guid VenueId { get; set; }
-        public Venue Venue { get; set; }
+        public Guid Id { get; set; }
 
         public DateTime StartedAt { get; set; }
 
@@ -29,6 +24,8 @@ namespace Vizitz.Entities
         public DateTime? Modified { get; set; }
 
         public DateTime? Deleted { get; set; }
+
+        public Venue Venue { get; set; }
 
         public virtual IList<Visit> Visits { get; set; }
     }

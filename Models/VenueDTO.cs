@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace Vizitz.Models
 {
-    public class VenueDTO : CreateVenueDTO
+    public class VenueDTO : UpdateVenueDTO
     {
         public string Id { get; set; }
 
@@ -18,39 +19,54 @@ namespace Vizitz.Models
         public virtual IList<ScheduleDTO> Schedules { get; set; }
     }
 
+    public class UpdateVenueDTO : CreateVenueDTO
+    {
+        [StringLength(255)]
+        public override string Name { get; set; }
+
+        [StringLength(255)]
+        public override string Address { get; set; }
+
+        [Phone]
+        public override string Phone { get; set; }
+
+        [IgnoreDataMember]
+        public override string ProprietorId { get; set; }
+    }
+
     public class CreateVenueDTO
     {
         [Required]
         [StringLength(255)]
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         [Required]
         [StringLength(255)]
-        public string Address { get; set; }
+        public virtual string Address { get; set; }
 
         [StringLength(255)]
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
 
         [Required]
         [Phone]
-        public string Phone { get; set; }
+        public virtual string Phone { get; set; }
 
         [Range(-90, 90)]
         [DefaultValue(null)]
-        public double Latitude { get; set; }
+        public virtual double Latitude { get; set; }
 
         [Range(-180, 180)]
         [DefaultValue(null)]
-        public double Longitude { get; set; }
+        public virtual double Longitude { get; set; }
 
         [Range(0, 5)]
         [DefaultValue(null)]
-        public double Rating { get; set; }
+        public virtual double Rating { get; set; }
 
         [DefaultValue(true)]
         public bool? IsActive { get; set; }
 
         [Required]
-        public string ProprietorId { get; set; }
+        public virtual string ProprietorId { get; set; }
     }
 }

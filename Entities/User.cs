@@ -8,17 +8,6 @@ namespace Vizitz.Entities
 {
     public class User : IdentityUser<Guid>, IHasTimestamps
     {
-        public const string RoleAdmin = "Admin";
-
-        public const string RoleVisitor = "Visitor";
-
-        public const string RoleProprietor = "Proprietor";
-
-        public static string[] Roles = { RoleVisitor, RoleProprietor };
-
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public override int Id { get; set; }
-
         public string Identification { get; set; }
 
         public string Name { get; set; }
@@ -40,5 +29,7 @@ namespace Vizitz.Entities
 
         // Proprietor
         public virtual IList<Venue> Venues { get; set; }
+
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

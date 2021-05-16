@@ -163,7 +163,7 @@ namespace Vizitz.Migrations
                 name: "Venues",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -192,8 +192,8 @@ namespace Vizitz.Migrations
                 name: "Schedules",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    VenueId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VenueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     StartedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FinishedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
@@ -218,8 +218,8 @@ namespace Vizitz.Migrations
                 name: "Visits",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ScheduleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ScheduleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     VisitorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     StartedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FinishedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -246,6 +246,21 @@ namespace Vizitz.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { new Guid("b6f768d5-6d77-4814-8a93-a679f97b6448"), "b6f768d5-6d77-4814-8a93-a679f97b6448", "Administrator", "ADMINISTRATOR" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { new Guid("1fe125cd-2a32-4a6e-aed9-7ff821627b38"), "1fe125cd-2a32-4a6e-aed9-7ff821627b38", "Proprietor", "PROPRIETOR" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { new Guid("889ef87a-ba2c-4e6e-b71c-03786981e437"), "889ef87a-ba2c-4e6e-b71c-03786981e437", "Visitor", "VISITOR" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
