@@ -131,6 +131,7 @@ namespace Vizitz.Controllers.API
             return CreatedAtRoute(nameof(GetProprietor), new { id = proprietor.Id }, _mapper.Map<ProprietorDTO>(proprietor));
         }
 
+        // TODO : Use constant from Role instead of hardcode
         [Authorize(Roles = "Administrator,Proprietor")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

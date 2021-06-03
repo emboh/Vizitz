@@ -69,6 +69,7 @@ namespace Vizitz.Controllers.API
             return _mapper.Map<VenueDTO>(venue);
         }
 
+        // TODO : Use constant from Role instead of hardcode
         [Authorize(Roles = "Administrator,Proprietor")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -88,6 +89,7 @@ namespace Vizitz.Controllers.API
         }
 
         // TODO : add policies only venue owner can edit
+        // TODO : Use constant from Role instead of hardcode
         [Authorize(Roles = "Administrator,Proprietor")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -117,6 +119,7 @@ namespace Vizitz.Controllers.API
         }
 
         // TODO : add policies only venue owner can delete
+        // TODO : Use constant from Role instead of hardcode
         [Authorize(Roles = "Administrator,Proprietor")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
