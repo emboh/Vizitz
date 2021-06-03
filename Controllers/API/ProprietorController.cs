@@ -54,6 +54,7 @@ namespace Vizitz.Controllers.API
             _unitOfWork = unitOfWork;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -71,6 +72,7 @@ namespace Vizitz.Controllers.API
             return Ok(_mapper.Map<IList<ProprietorDTO>>(proprietors));
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}", Name = nameof(GetProprietor))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -99,11 +101,12 @@ namespace Vizitz.Controllers.API
             return _mapper.Map<ProprietorDTO>(proprietor);
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = Role.Administrator)]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ProprietorDTO>> PostProprietor([FromBody] CreateProprietorDTO proprietorDTO)
         {
@@ -132,6 +135,8 @@ namespace Vizitz.Controllers.API
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PutProprietor(Guid id, [FromBody] UpdateProprietorDTO proprietorDTO)
@@ -154,10 +159,12 @@ namespace Vizitz.Controllers.API
             return NoContent();
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = Role.Administrator)]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteProprietor(Guid id)

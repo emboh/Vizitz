@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace Vizitz.Controllers.API
         public AccountController(
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
-            ILogger<AccountController> logger, 
+            ILogger<AccountController> logger,
             IMapper mapper,
             IAuthManager authManager
             )
@@ -47,8 +48,9 @@ namespace Vizitz.Controllers.API
             _authManager = authManager;
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        [Route("Register")]
+        [Route(nameof(Register))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -87,11 +89,12 @@ namespace Vizitz.Controllers.API
             return Ok(_mapper.Map<UserDTO>(user));
         }
 
+        [AllowAnonymous]
         [HttpPost]
+        [Route(nameof(Login))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
             _logger.LogInformation($"Login attempt for {loginDTO.Email}");
