@@ -68,7 +68,6 @@ namespace Vizitz.Repository
         {
             IQueryable<T> query = _db;
 
-
             if (includes != null)
             {
                 foreach (var includePropery in includes)
