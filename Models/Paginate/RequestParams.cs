@@ -7,11 +7,11 @@ namespace Vizitz.Models.Paginate
 {
     public class RequestParams
     {
-        const int maxPageSize = 50;
-
-        public int PageNumber { get; set; } = 1;
+        private const int MaxPageSize = 50;
 
         private int _pageSize = 10;
+
+        public int PageNumber { get; set; } = 1;
 
         public int PageSize
         {
@@ -21,7 +21,7 @@ namespace Vizitz.Models.Paginate
             }
             set
             {
-                _pageSize = (value > maxPageSize) ? maxPageSize : value;
+                _pageSize = (value > MaxPageSize) ? MaxPageSize : value;
             }
         }
     }
