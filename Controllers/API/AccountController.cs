@@ -106,5 +106,20 @@ namespace Vizitz.Controllers.API
 
             return Ok(new { Token = await _authManager.CreateToken() });
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route(nameof(Profile))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<UserDTO>> Profile()
+        {
+            var userName = User.Identity.Name;
+
+            User user = await _userManager.FindByNameAsync(userName);
+
+            return _mapper.Map<UserDTO>(user);
+        }
     }
 }
