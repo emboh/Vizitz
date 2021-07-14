@@ -29,6 +29,7 @@ namespace Vizitz.Data
             : base(options)
         {
             ChangeTracker.StateChanged += UpdateTimestamps;
+
             ChangeTracker.Tracked += UpdateTimestamps;
         }
 
@@ -48,10 +49,12 @@ namespace Vizitz.Data
                         entityWithTimestamps.Deleted = DateTime.UtcNow;
                         Console.WriteLine($"Stamped for delete: {e.Entry.Entity}");
                         break;
+
                     case EntityState.Modified:
                         entityWithTimestamps.Modified = DateTime.UtcNow;
                         Console.WriteLine($"Stamped for update: {e.Entry.Entity}");
                         break;
+
                     case EntityState.Added:
                         entityWithTimestamps.Added = DateTime.UtcNow;
                         Console.WriteLine($"Stamped for insert: {e.Entry.Entity}");

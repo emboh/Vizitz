@@ -21,8 +21,10 @@ namespace Vizitz.Services
 
         private User _user;
 
-        public AuthManager(UserManager<User> userManager,
-            IConfiguration configuration)
+        public AuthManager(
+            UserManager<User> userManager,
+            IConfiguration configuration
+            )
         {
             _userManager = userManager;
 
@@ -53,6 +55,7 @@ namespace Vizitz.Services
         {
             // TODO : move to secure location
             var key = "918471de-9195-457a-b1e8-08d912b91e58";
+
             var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
@@ -61,9 +64,9 @@ namespace Vizitz.Services
         private async Task<List<Claim>> GetClaims()
         {
             var claims = new List<Claim>
-             {
-                 new Claim(ClaimTypes.Name, _user.UserName)
-             };
+            {
+                new Claim(ClaimTypes.Name, _user.UserName)
+            };
 
             var roles = await _userManager.GetRolesAsync(_user);
 
@@ -79,8 +82,9 @@ namespace Vizitz.Services
         {
             var jwtSettings = _configuration.GetSection("Jwt");
 
-            var expiration = DateTime.Now.AddMinutes(Convert.ToDouble(
-                jwtSettings.GetSection("Lifetime").Value));
+            var expiration = DateTime.Now.AddMinutes(
+                Convert.ToDouble(jwtSettings.GetSection("Lifetime").Value)
+            );
 
             var token = new JwtSecurityToken(
                     issuer: jwtSettings.GetSection("Issuer").Value,

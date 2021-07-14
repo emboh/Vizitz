@@ -63,11 +63,10 @@ namespace Vizitz
                             Name = "Bearer",
                             In = ParameterLocation.Header,
 
-                            },
-                            new List<string>()
-                        }
-                    });
+                        }, new List<string>()
+                    }
                 });
+            });
 
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(
@@ -110,6 +109,7 @@ namespace Vizitz
             }
 
             app.UseSwagger();
+
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Vizitz v1");
