@@ -69,9 +69,8 @@ namespace Vizitz
             });
 
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DataBaseContext")
-                )
+                options.UseSqlServer(Configuration.GetConnectionString("DataBaseContext"))
+                .EnableSensitiveDataLogging(false)
             );
 
             services.AddAuthentication();
