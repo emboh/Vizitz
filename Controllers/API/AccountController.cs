@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Vizitz.Entities;
 using Vizitz.Models;
@@ -59,9 +61,11 @@ namespace Vizitz.Controllers.API
             _logger.LogInformation($"Registration for {registerDTO.Email}");
 
             // TODO : move role validation to RegisterDTO
+            string[] allowedRoles = { Role.Proprietor, Role.Visitor };
+
             foreach (var role in registerDTO.Roles)
             {
-                if (!Role.AllowedRoles.Contains(role, StringComparer.OrdinalIgnoreCase))
+                if (!allowedRoles.Contains(role, StringComparer.OrdinalIgnoreCase))
                 {
                     return Problem($"Role {role} doesn't exist.", statusCode: StatusCodes.Status400BadRequest);
                 }
@@ -115,9 +119,18 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<UserDTO>> Profile()
         {
-            var userName = User.Identity.Name;
+            //string userName = User.FindFirstValue(ClaimTypes.Name);
 
-            User user = await _userManager.FindByNameAsync(userName);
+            string userName = User.Identity?.Name;
+
+            _logger.LogInformation($"Show profile for {userName}");
+
+            //User user = await _userManager.FindByNameAsync(userName);
+
+            User user = await _userManager.Users
+                .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .FirstOrDefaultAsync(u => u.UserName == userName);
 
             return _mapper.Map<UserDTO>(user);
         }
