@@ -25,7 +25,7 @@ namespace Vizitz.Entities
 
         public DateTime? Deleted { get; set; }
 
-        public Venue Venue { get; set; }
+        public virtual Venue Venue { get; set; }
 
         public virtual IList<Visit> Visits { get; set; }
     }

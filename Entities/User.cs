@@ -30,6 +30,6 @@ namespace Vizitz.Entities
         // Proprietor
         public virtual IList<Venue> Venues { get; set; }
 
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual IList<UserRole> UserRoles { get; set; }
     }
 }

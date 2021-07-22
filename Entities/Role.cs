@@ -12,11 +12,6 @@ namespace Vizitz.Entities
 
         public const string Proprietor = "Proprietor";
 
-        // HACK : Constant roles
-#pragma warning disable CA2211 // Non-constant fields should not be visible
-        public static string[] AllowedRoles = { Visitor, Proprietor };
-#pragma warning restore CA2211 // Non-constant fields should not be visible
-
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual IList<UserRole> UserRoles { get; set; }
     }
 }

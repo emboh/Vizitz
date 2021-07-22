@@ -31,7 +31,7 @@ namespace Vizitz.Entities
 
         public DateTime? Deleted { get; set; }
 
-        public User Proprietor { get; set; }
+        public virtual User Proprietor { get; set; }
 
         public virtual IList<Schedule> Schedules { get; set; }
     }

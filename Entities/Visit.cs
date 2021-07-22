@@ -24,8 +24,8 @@ namespace Vizitz.Entities
 
         public DateTime? Deleted { get; set; }
 
-        public Schedule Schedule { get; set; }
+        public virtual Schedule Schedule { get; set; }
 
-        public User Visitor { get; set; }
+        public virtual User Visitor { get; set; }
     }
 }
