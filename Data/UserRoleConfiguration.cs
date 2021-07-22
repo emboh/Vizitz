@@ -8,7 +8,15 @@ namespace Vizitz.Data
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            throw new System.NotImplementedException();
+            builder.HasOne(e => e.User)
+                .WithMany(e => e.UserRoles)
+                .HasForeignKey(u => u.UserId)
+                .IsRequired();
+
+            builder.HasOne(e => e.Role)
+                .WithMany(e => e.UserRoles)
+                .HasForeignKey(u => u.RoleId)
+                .IsRequired();
         }
     }
 }
