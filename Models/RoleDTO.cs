@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Vizitz.Models
 {
@@ -8,6 +9,7 @@ namespace Vizitz.Models
 
         public string Name { get; set; }
 
+        [IgnoreDataMember]
         public IList<UserRoleDTO> UserRoles { get; set; }
     }
 }

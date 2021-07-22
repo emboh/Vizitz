@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using Vizitz.Models.Account;
 
 namespace Vizitz.Models
@@ -14,6 +15,9 @@ namespace Vizitz.Models
         public DateTime? Modified { get; set; }
 
         public IList<UserRoleDTO> UserRoles { get; set; }
+
+        [IgnoreDataMember]
+        public override IList<string> Roles { get; set; }
     }
 
     public class UpdateUserDTO : RegisterDTO

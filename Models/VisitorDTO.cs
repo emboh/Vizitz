@@ -24,6 +24,9 @@ namespace Vizitz.Models
         public virtual IList<VisitDTO> Visits { get; set; }
 
         public IList<UserRoleDTO> UserRoles { get; set; }
+
+        [IgnoreDataMember]
+        public override IList<string> Roles { get; set; }
     }
 
     public class CreateVisitorDTO : RegisterDTO
