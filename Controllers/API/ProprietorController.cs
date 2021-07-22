@@ -67,7 +67,8 @@ namespace Vizitz.Controllers.API
             var proprietors = await _userManager.Users
                 .Include(u => u.UserRoles.Where(r => r.RoleId == role.Id))
                 .ThenInclude(ur => ur.Role)
-                .AsNoTracking().ToListAsync();
+                .AsNoTracking()
+                .ToListAsync();
 
             return Ok(_mapper.Map<IList<ProprietorDTO>>(proprietors));
         }
