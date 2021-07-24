@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Vizitz.Entities;
 using Vizitz.Models.Account;
 
 namespace Vizitz.Services
@@ -8,5 +9,7 @@ namespace Vizitz.Services
         Task<bool> ValidateUser(LoginDTO loginDTO);
 
         Task<string> CreateToken();
+
+        Task<User> GetUserDetail(string userName);
     }
 }

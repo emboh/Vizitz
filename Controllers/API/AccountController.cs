@@ -125,12 +125,7 @@ namespace Vizitz.Controllers.API
 
             _logger.LogInformation($"Show profile for {userName}");
 
-            //User user = await _userManager.FindByNameAsync(userName);
-
-            User user = await _userManager.Users
-                .Include(u => u.UserRoles)
-                .ThenInclude(ur => ur.Role)
-                .FirstOrDefaultAsync(u => u.UserName == userName);
+            User user = await _authManager.GetUserDetail(userName);
 
             return _mapper.Map<UserDTO>(user);
         }

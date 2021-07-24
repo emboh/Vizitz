@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -49,6 +50,16 @@ namespace Vizitz.Services
             var validPassword = await _userManager.CheckPasswordAsync(_user, loginDTO.Password);
 
             return (_user != null && validPassword);
+        }
+
+        public async Task<User> GetUserDetail(string userName)
+        {
+            //User user = await _userManager.FindByNameAsync(userName);
+
+            return await _userManager.Users
+                .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .FirstOrDefaultAsync(u => u.UserName == userName);
         }
 
         private static SigningCredentials GetSigningCredentials()
