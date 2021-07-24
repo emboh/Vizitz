@@ -19,13 +19,10 @@ namespace Vizitz
     {
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            IdentityBuilder builder = services
-                .AddIdentityCore<User>(q => { q.User.RequireUniqueEmail = true; })
-                .AddRoles<Role>();
-
-            builder.AddEntityFrameworkStores<DatabaseContext>();
-
-            builder.AddDefaultTokenProviders();
+            services.AddIdentityCore<User>(q => { q.User.RequireUniqueEmail = true; })
+                .AddRoles<Role>()
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
         }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration Configuration)
