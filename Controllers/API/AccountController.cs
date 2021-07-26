@@ -99,16 +99,18 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
+        public async Task<IActionResult> Login(
+            [FromServices] IAuthManager authManager, 
+            [FromBody] LoginDTO loginDTO)
         {
             _logger.LogInformation($"Login attempt for {loginDTO.Email}");
 
-            if (!await _authManager.ValidateUser(loginDTO))
+            if (!await authManager.ValidateUser(loginDTO))
             {
                 return Unauthorized();
             }
 
-            return Ok(new { Token = await _authManager.CreateToken() });
+            return Ok(new { Token = await authManager.CreateToken() });
         }
 
         [Authorize]
