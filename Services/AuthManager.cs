@@ -20,12 +20,13 @@ namespace Vizitz.Services
 
         private readonly IConfiguration _configuration;
 
+        private const string DEFAULT_LIFETIME = "10080";
+
+        private const string DEFAULT_ISSUER = "Vizitz";
+
         private User _user;
 
-        public AuthManager(
-            UserManager<User> userManager,
-            IConfiguration configuration
-            )
+        public AuthManager(UserManager<User> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
 
@@ -76,7 +77,10 @@ namespace Vizitz.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, _user.UserName)
+                new Claim(ClaimTypes.Sid, _user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, _user.UserName),
+                new Claim(ClaimTypes.Name, _user.Name),
+                new Claim(ClaimTypes.MobilePhone, _user.PhoneNumber),
             };
 
             var roles = await _userManager.GetRolesAsync(_user);
@@ -94,11 +98,11 @@ namespace Vizitz.Services
             var jwtSettings = _configuration.GetSection("Jwt");
 
             var expiration = DateTime.Now.AddMinutes(
-                Convert.ToDouble(jwtSettings.GetSection("Lifetime").Value)
+                Convert.ToDouble(jwtSettings.GetSection("Lifetime")?.Value ?? DEFAULT_LIFETIME)
             );
 
             var token = new JwtSecurityToken(
-                    issuer: jwtSettings.GetSection("Issuer").Value,
+                    issuer: jwtSettings.GetSection("Issuer")?.Value ?? DEFAULT_ISSUER,
                     claims: claims,
                     expires: expiration,
                     signingCredentials: signingCredentials
