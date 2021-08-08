@@ -10,7 +10,7 @@ namespace Vizitz.Models
     {
         public string Id { get; set; }
 
-        public VenueDTO Venue { get; set; }
+        public virtual VenueDTO Venue { get; set; }
 
         public DateTime? Added { get; set; }
 
@@ -41,6 +41,6 @@ namespace Vizitz.Models
         public bool IsValid { get; set; }
 
         [Required]
-        public string VenueId { get; set; }
+        public virtual string VenueId { get; set; }
     }
 }

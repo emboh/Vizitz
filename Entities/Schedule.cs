@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Vizitz.IEntities;
 
@@ -24,6 +25,9 @@ namespace Vizitz.Entities
         public DateTime? Modified { get; set; }
 
         public DateTime? Deleted { get; set; }
+
+        [Required]
+        public Guid VenueId { get; set; }
 
         public virtual Venue Venue { get; set; }
 

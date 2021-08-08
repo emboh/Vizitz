@@ -40,14 +40,12 @@ namespace Vizitz.Models
         [StringLength(255)]
         public virtual string Name { get; set; }
 
-        [Required]
         [StringLength(255)]
         public virtual string Address { get; set; }
 
         [StringLength(255)]
         public virtual string Description { get; set; }
 
-        [Required]
         [Phone]
         public virtual string Phone { get; set; }
 
@@ -66,7 +64,7 @@ namespace Vizitz.Models
         [DefaultValue(true)]
         public bool? IsActive { get; set; }
 
-        [Required]
+        [DefaultValue(null)]
         public virtual string ProprietorId { get; set; }
     }
 }
