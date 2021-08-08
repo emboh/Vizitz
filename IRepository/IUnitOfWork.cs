@@ -10,6 +10,10 @@ namespace Vizitz.IRepository
 
         IGenericRepository<User> Users { get; }
 
+        IGenericRepository<User> Proprietors { get; }
+
+        IGenericRepository<User> Visitors { get; }
+
         IGenericRepository<Venue> Venues { get; }
 
         IGenericRepository<Visit> Visits { get; }

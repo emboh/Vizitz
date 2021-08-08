@@ -18,6 +18,10 @@ namespace Vizitz.Repository
 
         private IGenericRepository<User> _users;
 
+        private IGenericRepository<User> _proprietors;
+
+        private IGenericRepository<User> _visitors;
+
         private IGenericRepository<Venue> _venues;
 
         private IGenericRepository<Visit> _visits;
@@ -30,6 +34,10 @@ namespace Vizitz.Repository
         public IGenericRepository<Schedule> Schedules => _schedules ??= new GenericRepository<Schedule>(_context);
 
         public IGenericRepository<User> Users => _users ??= new GenericRepository<User>(_context);
+
+        public IGenericRepository<User> Proprietors => _proprietors ??= new ProprietorRepository(_context);
+
+        public IGenericRepository<User> Visitors => _visitors ??= new VisitorRepository(_context);
 
         public IGenericRepository<Venue> Venues => _venues ??= new GenericRepository<Venue>(_context);
 
