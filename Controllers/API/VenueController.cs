@@ -3,14 +3,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Vizitz.Entities;
 using Vizitz.IRepository;
 using Vizitz.Models;
 using Vizitz.Models.Paginate;
+using Vizitz.Services;
 
 namespace Vizitz.Controllers.API
 {
@@ -46,6 +49,18 @@ namespace Vizitz.Controllers.API
         {
             var venues = await _unitOfWork.Venues.GetPagedList(requestParams);
 
+            var metadata = new
+            {
+                venues.Count,
+                venues.PageSize,
+                venues.PageCount,
+                venues.PageNumber,
+                venues.HasNextPage,
+                venues.HasPreviousPage,
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
             return Ok(_mapper.Map<IList<VenueDTO>>(venues));
         }
 
@@ -69,8 +84,7 @@ namespace Vizitz.Controllers.API
             return _mapper.Map<VenueDTO>(venue);
         }
 
-        // TODO : Use constant from Role instead of hardcode
-        [Authorize(Roles = "Administrator,Proprietor")]
+        [Authorize(Roles = $"{Role.Administrator},{Role.Proprietor}")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -79,6 +93,10 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ProprietorDTO>> PostVenue([FromBody] CreateVenueDTO venueDTO)
         {
+            string proprietorId = User.FindFirstValue(ClaimTypes.Sid);
+
+            venueDTO.ProprietorId = proprietorId;
+
             Venue venue = _mapper.Map<Venue>(venueDTO);
 
             await _unitOfWork.Venues.Insert(venue);
@@ -88,9 +106,7 @@ namespace Vizitz.Controllers.API
             return CreatedAtRoute(nameof(GetVenue), new { id = venue.Id }, _mapper.Map<VenueDTO>(venue));
         }
 
-        // TODO : add policies only venue owner can edit
-        // TODO : Use constant from Role instead of hardcode
-        [Authorize(Roles = "Administrator,Proprietor")]
+        [Authorize(Roles = $"{Role.Administrator},{Role.Proprietor}")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -109,6 +125,16 @@ namespace Vizitz.Controllers.API
                 return NotFound();
             }
 
+            string proprietorId = User.FindFirstValue(ClaimTypes.Sid);
+
+            // TODO : move validation to policy
+            if (venue.ProprietorId == new Guid(Role.ProprietorId) || !User.IsInRole(Role.Administrator))
+            {
+                _logger.LogError($"Forbidden attempt in {nameof(PutVenue)}");
+
+                return Forbid();
+            }
+
             _mapper.Map(venueDTO, venue);
 
             _unitOfWork.Venues.Update(venue);
@@ -118,9 +144,7 @@ namespace Vizitz.Controllers.API
             return NoContent();
         }
 
-        // TODO : add policies only venue owner can delete
-        // TODO : Use constant from Role instead of hardcode
-        [Authorize(Roles = "Administrator,Proprietor")]
+        [Authorize(Roles = $"{Role.Administrator},{Role.Proprietor}")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -137,6 +161,16 @@ namespace Vizitz.Controllers.API
                 _logger.LogError($"Invalid attempt in {nameof(DeleteVenue)}");
 
                 return NotFound();
+            }
+
+            string proprietorId = User.FindFirstValue(ClaimTypes.Sid);
+
+            // TODO : move validation to policy
+            if (venue.ProprietorId == new Guid(Role.ProprietorId) || !User.IsInRole(Role.Administrator))
+            {
+                _logger.LogError($"Forbidden attempt in {nameof(PutVenue)}");
+
+                return Forbid();
             }
 
             await _unitOfWork.Venues.Delete(id);
