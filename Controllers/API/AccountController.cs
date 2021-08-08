@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Bogus.DataSets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -119,15 +120,15 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserDTO>> Profile()
+        public async Task<ActionResult<UserDTO>> Profile([FromServices] IAuthManager authManager)
         {
-            //string userName = User.FindFirstValue(ClaimTypes.Name);
+            string name = User.Identity?.Name;
 
-            string userName = User.Identity?.Name;
+            string userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            _logger.LogInformation($"Show profile for {userName}");
+            _logger.LogInformation($"Show profile for {name}");
 
-            User user = await _authManager.GetUserDetail(userName);
+            User user = await authManager.GetUserDetail(userName);
 
             return _mapper.Map<UserDTO>(user);
         }
