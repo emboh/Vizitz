@@ -29,15 +29,12 @@ namespace Vizitz.Controllers.API
 
         private readonly IMapper _mapper;
 
-        private readonly IAuthManager _authManager;
-
         private readonly IUnitOfWork _unitOfWork;
 
         public ProprietorController(
             UserManager<User> userManager,
             ILogger<ProprietorController> logger,
             IMapper mapper,
-            IAuthManager authManager,
             IUnitOfWork unitOfWork
             )
         {
@@ -46,8 +43,6 @@ namespace Vizitz.Controllers.API
             _logger = logger;
 
             _mapper = mapper;
-
-            _authManager = authManager;
 
             _unitOfWork = unitOfWork;
         }
