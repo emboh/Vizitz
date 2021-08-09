@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Vizitz.Data;
 using Vizitz.Entities;
@@ -24,6 +25,24 @@ namespace Vizitz.Repository
             _context = context;
 
             _db = _context.Set<User>();
+        }
+
+        public new async Task<User> Get(Expression<Func<User, bool>> expression, List<string> includes = null)
+        {
+            IQueryable<User> query = _db;
+
+            if (includes != null)
+            {
+                foreach (var includeProperty in includes)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            query.Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role.Id == new Guid(Role.VisitorId));
+
+            return await query.AsNoTracking().FirstOrDefaultAsync(expression);
         }
 
         public new async Task<IPagedList<User>> GetPagedList(RequestParams requestParams, List<string> includes = null)
