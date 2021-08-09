@@ -27,7 +27,7 @@ namespace Vizitz.Repository
             _db = _context.Set<User>();
         }
 
-        public async new Task<User> Get(Expression<Func<User, bool>> expression, List<string> includes = null)
+        public new async Task<User> Get(Expression<Func<User, bool>> expression, List<string> includes = null)
         {
             IQueryable<User> query = _db;
 
