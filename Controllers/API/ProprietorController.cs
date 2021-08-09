@@ -84,7 +84,7 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ProprietorDTO>> GetProprietor(Guid id)
         {
-            var proprietor = await _unitOfWork.Proprietors.Get(u => u.Id == id);
+            User proprietor = await _unitOfWork.Proprietors.Get(u => u.Id == id);
 
             if (proprietor == null)
             {
@@ -99,7 +99,6 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ProprietorDTO>> PostProprietor([FromBody] CreateProprietorDTO proprietorDTO)
         {
@@ -129,12 +128,11 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PutProprietor(Guid id, [FromBody] UpdateProprietorDTO proprietorDTO)
         {
-            var proprietor = await _unitOfWork.Proprietors.Get(u => u.Id == id);
+            User proprietor = await _unitOfWork.Proprietors.Get(u => u.Id == id);
 
             if (proprietor == null)
             {
@@ -159,12 +157,11 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteProprietor(Guid id)
         {
-            var proprietor = await _unitOfWork.Proprietors.Get(u => u.Id == id);
+            User proprietor = await _unitOfWork.Proprietors.Get(u => u.Id == id);
 
             if (proprietor == null)
             {

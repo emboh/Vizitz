@@ -89,7 +89,6 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ProprietorDTO>> PostVenue([FromBody] CreateVenueDTO venueDTO)
         {
@@ -111,28 +110,23 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PutVenue(Guid id, [FromBody] UpdateVenueDTO venueDTO)
         {
-            Venue venue = await _unitOfWork.Venues.Get(q => q.Id == id);
+            Venue venue = await _unitOfWork.Venues.Get(q => 
+                q.Id == id 
+                && (
+                    q.ProprietorId == new Guid(User.FindFirstValue(ClaimTypes.Sid)) 
+                    || User.IsInRole(Role.Administrator)
+                )
+            );
 
             if (venue == null)
             {
                 _logger.LogError($"Invalid attempt in {nameof(PutVenue)}");
 
                 return NotFound();
-            }
-
-            string proprietorId = User.FindFirstValue(ClaimTypes.Sid);
-
-            // TODO : move validation to policy
-            if (venue.ProprietorId == new Guid(Role.ProprietorId) || !User.IsInRole(Role.Administrator))
-            {
-                _logger.LogError($"Forbidden attempt in {nameof(PutVenue)}");
-
-                return Forbid();
             }
 
             _mapper.Map(venueDTO, venue);
@@ -149,28 +143,23 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteVenue(Guid id)
         {
-            Venue venue = await _unitOfWork.Venues.Get(q => q.Id == id);
+            Venue venue = await _unitOfWork.Venues.Get(q =>
+                q.Id == id
+                && (
+                    q.ProprietorId == new Guid(User.FindFirstValue(ClaimTypes.Sid))
+                    || User.IsInRole(Role.Administrator)
+                )
+            );
 
             if (venue == null)
             {
                 _logger.LogError($"Invalid attempt in {nameof(DeleteVenue)}");
 
                 return NotFound();
-            }
-
-            string proprietorId = User.FindFirstValue(ClaimTypes.Sid);
-
-            // TODO : move validation to policy
-            if (venue.ProprietorId == new Guid(Role.ProprietorId) || !User.IsInRole(Role.Administrator))
-            {
-                _logger.LogError($"Forbidden attempt in {nameof(PutVenue)}");
-
-                return Forbid();
             }
 
             await _unitOfWork.Venues.Delete(id);
