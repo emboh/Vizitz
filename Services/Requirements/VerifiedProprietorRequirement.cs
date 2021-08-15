@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Vizitz.Entities;
 
 namespace Vizitz.Services.Requirements
 {
@@ -15,7 +14,7 @@ namespace Vizitz.Services.Requirements
 
         public VerifiedProprietorRequirement()
         {
-
+            
         }
     }
 }
