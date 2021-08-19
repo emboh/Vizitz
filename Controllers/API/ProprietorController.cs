@@ -52,7 +52,6 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ResponseCache(CacheProfileName = "ResourceList")]
         public async Task<ActionResult<IEnumerable<ProprietorDTO>>> GetProprietor([FromQuery] RequestParams requestParams)
         {
             var proprietors = await _unitOfWork.Proprietors.GetPagedList(requestParams);
@@ -78,7 +77,6 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ResponseCache(CacheProfileName = "ResourceItem")]
         public async Task<ActionResult<ProprietorDTO>> GetProprietor(Guid id)
         {
             User proprietor = await _unitOfWork.Proprietors.Get(u => u.Id == id);

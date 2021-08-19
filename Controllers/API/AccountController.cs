@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bogus.DataSets;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -119,6 +120,8 @@ namespace Vizitz.Controllers.API
         [ApiVersion("1.0")]
         [Authorize]
         [HttpGet]
+        [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 30)]
+        [HttpCacheValidation(MustRevalidate = false)]
         [Route(nameof(Profile))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

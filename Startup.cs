@@ -39,9 +39,9 @@ namespace Vizitz
                 .EnableSensitiveDataLogging(false)
             );
 
-            services.AddAuthentication();
+            services.ConfigureHttpCacheHeaders();
 
-            services.AddResponseCaching();
+            services.AddAuthentication();
 
             services.ConfigureIdentity();
 
@@ -61,7 +61,7 @@ namespace Vizitz
 
             services.AddScoped<IAuthManager, AuthManager>();
 
-            services.AddControllers(config => {
+            services.AddControllers(/*config => {
                 config.CacheProfiles.Add("ResourceList", new CacheProfile
                 {
                     Duration = 120
@@ -71,7 +71,7 @@ namespace Vizitz
                 {
                     Duration = 60
                 });
-            }).AddNewtonsoftJson(options =>
+            }*/).AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling =
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
@@ -100,6 +100,8 @@ namespace Vizitz
             app.UseHttpsRedirection();
 
             app.UseResponseCaching();
+
+            app.UseHttpCacheHeaders();
 
             app.UseCors("AllowAll");
 
