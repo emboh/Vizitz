@@ -45,6 +45,7 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ResponseCache(CacheProfileName = "ResourceList")]
         public async Task<ActionResult<IEnumerable<VenueDTO>>> GetVenue([FromQuery] RequestParams requestParams)
         {
             var venues = await _unitOfWork.Venues.GetPagedList(requestParams);
@@ -70,6 +71,7 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ResponseCache(CacheProfileName = "ResourceItem")]
         public async Task<ActionResult<VenueDTO>> GetVenue(Guid id)
         {
             Venue venue = await _unitOfWork.Venues.Get(q => q.Id == id);

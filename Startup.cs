@@ -41,6 +41,8 @@ namespace Vizitz
 
             services.AddAuthentication();
 
+            services.AddResponseCaching();
+
             services.ConfigureIdentity();
 
             services.ConfigureJWT(Configuration);
@@ -59,7 +61,17 @@ namespace Vizitz
 
             services.AddScoped<IAuthManager, AuthManager>();
 
-            services.AddControllers().AddNewtonsoftJson(options =>
+            services.AddControllers(config => {
+                config.CacheProfiles.Add("ResourceList", new CacheProfile
+                {
+                    Duration = 120
+                });
+
+                config.CacheProfiles.Add("ResourceItem", new CacheProfile
+                {
+                    Duration = 60
+                });
+            }).AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling =
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
@@ -86,6 +98,8 @@ namespace Vizitz
             app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
+
+            app.UseResponseCaching();
 
             app.UseCors("AllowAll");
 
