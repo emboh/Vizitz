@@ -51,6 +51,7 @@ namespace Vizitz.Controllers.API
             _authManager = authManager;
         }
 
+        [ApiVersion("1.0")]
         [AllowAnonymous]
         [HttpPost]
         [Route(nameof(Register))]
@@ -94,6 +95,7 @@ namespace Vizitz.Controllers.API
             return Ok(_mapper.Map<UserDTO>(user));
         }
 
+        [ApiVersion("1.0")]
         [AllowAnonymous]
         [HttpPost]
         [Route(nameof(Login))]
@@ -114,6 +116,7 @@ namespace Vizitz.Controllers.API
             return Ok(new { Token = await authManager.CreateToken() });
         }
 
+        [ApiVersion("1.0")]
         [Authorize]
         [HttpGet]
         [Route(nameof(Profile))]
