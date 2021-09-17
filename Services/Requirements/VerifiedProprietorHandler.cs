@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Vizitz.Entities;
 
 namespace Vizitz.Services.Requirements
@@ -24,7 +25,7 @@ namespace Vizitz.Services.Requirements
 
             string userName = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            User user = GetUserDetail(userName).Result;
+            User user = _authManager.GetUserDetail(userName).Result;
 
             if (user != null && user.EmailConfirmed)
             {
@@ -32,11 +33,6 @@ namespace Vizitz.Services.Requirements
             }
 
             return Task.CompletedTask;
-        }
-
-        private async Task<User> GetUserDetail(string userName)
-        {
-            return await _authManager.GetUserDetail(userName);
         }
     }
 }
