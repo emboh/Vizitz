@@ -58,6 +58,7 @@ namespace Vizitz.Controllers.API
         [Route(nameof(Register))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
@@ -102,6 +103,7 @@ namespace Vizitz.Controllers.API
         [Route(nameof(Login))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login(
             [FromServices] IAuthManager authManager, 
@@ -123,8 +125,9 @@ namespace Vizitz.Controllers.API
         [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 30)]
         [HttpCacheValidation(MustRevalidate = false)]
         [Route(nameof(Profile))]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<UserDTO>> Profile([FromServices] IAuthManager authManager)
         {

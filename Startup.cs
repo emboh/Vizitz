@@ -15,6 +15,7 @@ using Vizitz.Data;
 using Vizitz.IRepository;
 using Vizitz.Repository;
 using Vizitz.Services;
+using AspNetCoreRateLimit;
 
 namespace Vizitz
 {
@@ -38,6 +39,14 @@ namespace Vizitz
                 options.UseSqlServer(Configuration.GetConnectionString("DataBaseContext"))
                 .EnableSensitiveDataLogging(false)
             );
+
+            services.AddMemoryCache();
+
+            services.AddInMemoryRateLimiting();
+
+            services.ConfigureRateLimiting();
+
+            services.AddHttpContextAccessor();
 
             services.ConfigureHttpCacheHeaders();
 
@@ -102,6 +111,8 @@ namespace Vizitz
             app.UseResponseCaching();
 
             app.UseHttpCacheHeaders();
+
+            app.UseIpRateLimiting();
 
             app.UseCors("AllowAll");
 
