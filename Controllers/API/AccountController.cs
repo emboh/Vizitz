@@ -136,7 +136,7 @@ namespace Vizitz.Controllers.API
 
             User user = await authManager.GetUserDetail(userName);
 
-            return _mapper.Map<UserDTO>(user);
+            return Ok(_mapper.Map<UserDTO>(user));
         }
     }
 }

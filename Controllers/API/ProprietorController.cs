@@ -86,7 +86,7 @@ namespace Vizitz.Controllers.API
                 return NotFound();
             }
 
-            return _mapper.Map<ProprietorDTO>(proprietor);
+            return Ok(_mapper.Map<ProprietorDTO>(proprietor));
         }
 
         [Authorize(Roles = $"{Role.Administrator}")]

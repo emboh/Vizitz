@@ -81,7 +81,7 @@ namespace Vizitz.Controllers.API
                 return NotFound();
             }
 
-            return _mapper.Map<VenueDTO>(venue);
+            return Ok(_mapper.Map<VenueDTO>(venue));
         }
 
         [Authorize(Roles = $"{Role.Administrator},{Role.Proprietor}")]
@@ -118,7 +118,8 @@ namespace Vizitz.Controllers.API
                 q.Id == id 
                 && (
                     q.ProprietorId == new Guid(User.FindFirstValue(ClaimTypes.Sid)) 
-                    || User.IsInRole(Role.Administrator)
+                    || 
+                    User.IsInRole(Role.Administrator)
                 )
             );
 
@@ -151,7 +152,8 @@ namespace Vizitz.Controllers.API
                 q.Id == id
                 && (
                     q.ProprietorId == new Guid(User.FindFirstValue(ClaimTypes.Sid))
-                    || User.IsInRole(Role.Administrator)
+                    || 
+                    User.IsInRole(Role.Administrator)
                 )
             );
 
