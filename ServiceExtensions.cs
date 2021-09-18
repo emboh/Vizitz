@@ -1,5 +1,7 @@
 ﻿using AspNetCoreRateLimit;
+using FluentValidation.AspNetCore;
 using Marvin.Cache.Headers;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -12,8 +14,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using Vizitz.Data;
 using Vizitz.Entities;
@@ -159,6 +163,23 @@ namespace Vizitz
             services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
 
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+        }
+
+        public static void ConfigureValidation(this IServiceCollection services)
+        {
+            services.AddControllers()
+                .AddFluentValidation(fv =>
+                {
+                    fv.ImplicitlyValidateChildProperties = true;
+                    fv.ImplicitlyValidateRootCollectionElements = true;
+
+                    fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+                    // Other way to register validators
+                    //fv.RegisterValidatorsFromAssemblyContaining<Startup>();
+                });
+
+            services.AddFluentValidationRulesToSwagger();
         }
     }
 }
