@@ -10,6 +10,9 @@ namespace Vizitz.Data
         public MapInitializer()
         {
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<User, CreateUserDTO>().ReverseMap();
+            CreateMap<User, UpdateUserDTO>().ReverseMap();
+
             CreateMap<Role, RoleDTO>().ReverseMap();
             CreateMap<UserRole, UserRoleDTO>().ReverseMap();
 
@@ -32,9 +35,11 @@ namespace Vizitz.Data
 
             CreateMap<Schedule, ScheduleDTO>().ReverseMap();
             CreateMap<Schedule, CreateScheduleDTO>().ReverseMap();
+            CreateMap<Schedule, UpdateScheduleDTO>().ReverseMap();
 
             CreateMap<Visit, VisitDTO>().ReverseMap();
             CreateMap<Visit, CreateVisitDTO>().ReverseMap();
+            CreateMap<Visit, UpdateVisitDTO>().ReverseMap();
         }
     }
 }
