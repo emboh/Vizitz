@@ -6,65 +6,74 @@ using System.Runtime.Serialization;
 
 namespace Vizitz.Models
 {
-    public class VenueDTO : UpdateVenueDTO
+    public class VenueDTO
     {
         public string Id { get; set; }
 
-        public ProprietorDTO Proprietor { get; set; }
+        public string Name { get; set; }
+
+        public string Address { get; set; }
+
+        public string Description { get; set; }
+
+        public string Phone { get; set; }
+
+        public double? Latitude { get; set; }
+
+        public double? Longitude { get; set; }
+
+        public double? Rating { get; set; }
+
+        public bool? IsActive { get; set; }
 
         public DateTime? Added { get; set; }
 
         public DateTime? Modified { get; set; }
 
+        public virtual ProprietorDTO Proprietor { get; set; }
+
         public virtual IList<ScheduleDTO> Schedules { get; set; }
-    }
-
-    public class UpdateVenueDTO : CreateVenueDTO
-    {
-        [StringLength(255)]
-        public override string Name { get; set; }
-
-        [StringLength(255)]
-        public override string Address { get; set; }
-
-        [Phone]
-        public override string Phone { get; set; }
-
-        [IgnoreDataMember]
-        public override string ProprietorId { get; set; }
     }
 
     public class CreateVenueDTO
     {
-        [Required]
-        [StringLength(255)]
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
-        [StringLength(255)]
-        public virtual string Address { get; set; }
+        public string Address { get; set; }
 
-        [StringLength(255)]
-        public virtual string Description { get; set; }
+        public string Description { get; set; }
 
-        [Phone]
-        public virtual string Phone { get; set; }
+        public string Phone { get; set; }
 
-        [Range(-90, 90)]
-        [DefaultValue(null)]
-        public virtual double Latitude { get; set; }
+        public double? Latitude { get; set; }
 
-        [Range(-180, 180)]
-        [DefaultValue(null)]
-        public virtual double Longitude { get; set; }
+        public double? Longitude { get; set; }
 
-        [Range(0, 5)]
-        [DefaultValue(null)]
-        public virtual double Rating { get; set; }
+        public double? Rating { get; set; }
 
-        [DefaultValue(true)]
         public bool? IsActive { get; set; }
 
-        [DefaultValue(null)]
-        public virtual string ProprietorId { get; set; }
+        public string ProprietorId { get; set; }
+    }
+
+    public class UpdateVenueDTO
+    {
+        public string Name { get; set; }
+
+        public string Address { get; set; }
+
+        public string Description { get; set; }
+
+        public string Phone { get; set; }
+
+        public double? Latitude { get; set; }
+
+        public double? Longitude { get; set; }
+
+        public double? Rating { get; set; }
+
+        public bool? IsActive { get; set; }
+
+        public string ProprietorId { get; set; }
     }
 }

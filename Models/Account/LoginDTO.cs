@@ -4,12 +4,8 @@ namespace Vizitz.Models.Account
 {
     public class LoginDTO
     {
-        [Required]
-        [EmailAddress]
-        public virtual string Email { get; set; }
+        public string Email { get; set; }
 
-        [Required]
-        [StringLength(255, MinimumLength = 6)]
-        public virtual string Password { get; set; }
+        public string Password { get; set; }
     }
 }

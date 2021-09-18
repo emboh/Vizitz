@@ -4,25 +4,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Vizitz.Models.Account
 {
-    public class RegisterDTO : LoginDTO
+    public class RegisterDTO
     {
-        [Required]
-        [StringLength(16, MinimumLength = 16)]
-        public virtual string Identification { get; set; }
+        public string Email { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        public virtual string Name { get; set; }
+        public string Password { get; set; }
 
-        [StringLength(255)]
-        [DefaultValue(null)]
-        public virtual string Address { get; set; }
+        public string Identification { get; set; }
 
-        [Phone]
-        [DefaultValue(null)]
-        public virtual string PhoneNumber { get; set; }
+        public string Name { get; set; }
 
-        [MinLength(1)]
-        public virtual IList<string> Roles { get; set; }
+        public string Address { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public IList<string> Roles { get; set; }
     }
 }

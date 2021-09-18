@@ -8,8 +8,5 @@ namespace Vizitz.Models
         public string Id { get; set; }
 
         public string Name { get; set; }
-
-        [IgnoreDataMember]
-        public IList<UserRoleDTO> UserRoles { get; set; }
     }
 }

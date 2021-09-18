@@ -10,12 +10,24 @@ using Vizitz.Models.Account;
 
 namespace Vizitz.Models
 {
-    public class VisitorDTO : UpdateVisitorDTO
+    public class VisitorDTO
     {
         public string Id { get; set; }
 
         // TODO : add avatar file image
         //public new string Avatar { get; set; }
+
+        public string Identification { get; set; }
+
+        public string Name { get; set; }
+
+        public string Address { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public string Email { get; set; }
+
+        public bool? IsActive { get; set; }
 
         public DateTime? Added { get; set; }
 
@@ -23,40 +35,43 @@ namespace Vizitz.Models
 
         public virtual IList<VisitDTO> Visits { get; set; }
 
-        public IList<UserRoleDTO> UserRoles { get; set; }
-
-        [IgnoreDataMember]
-        public override IList<string> Roles { get; set; }
+        public virtual IList<UserRoleDTO> UserRoles { get; set; }
     }
 
-    public class CreateVisitorDTO : RegisterDTO
+    public class CreateVisitorDTO
     {
-        [IgnoreDataMember]
-        public override IList<string> Roles { get; set; }
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        public string Identification { get; set; }
+
+        public string Name { get; set; }
+
+        public string Address { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public bool? IsActive { get; set; }
     }
 
-    public class UpdateVisitorDTO : RegisterDTO
+    public class UpdateVisitorDTO
     {
-        [EmailAddress]
-        public override string Email { get; set; }
+        public string Email { get; set; }
 
-        [StringLength(255, MinimumLength = 6)]
-        public override string Password { get; set; }
+        public string Password { get; set; }
 
-        [StringLength(16, MinimumLength = 16)]
-        public override string Identification { get; set; }
+        public string Identification { get; set; }
 
-        [StringLength(255)]
-        public override string Name { get; set; }
+        public string Name { get; set; }
 
-        [StringLength(255)]
-        [DefaultValue(null)]
-        public override string Address { get; set; }
+        public string Address { get; set; }
 
-        [Range(typeof(bool), "false", "true")]
+        public string PhoneNumber { get; set; }
+
         public bool? IsActive { get; set; }
 
-        public override IList<string> Roles { get; set; }
+        public virtual IList<string> Roles { get; set; }
 
         //[DefaultValue(null)]
         //[FileExtensions(Extensions = "jpg,jpeg,gif,png")]
