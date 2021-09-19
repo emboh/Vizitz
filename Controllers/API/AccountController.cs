@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Vizitz.Entities;
 using Vizitz.Models;
 using Vizitz.Models.Account;
+using Vizitz.Models.Exception;
 using Vizitz.Services;
 
 namespace Vizitz.Controllers.API
@@ -141,6 +142,40 @@ namespace Vizitz.Controllers.API
             User user = await authManager.GetUserDetail(userName);
 
             return Ok(_mapper.Map<UserDTO>(user));
+        }
+
+        [ApiVersion("1.0")]
+        [Authorize]
+        [HttpPost]
+        [Route(nameof(ChangePassword))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ResponseBody))]
+        public async Task<IActionResult> ChangePassword(
+            [FromServices] IAuthManager authManager,
+            [FromBody] ChangePasswordDTO changePasswordDTO
+            )
+        {
+            string userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            _logger.LogInformation($"Change password for {userName}");
+
+            User user = await authManager.GetUserDetail(userName);
+
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDTO.CurrentPassword, changePasswordDTO.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            return NoContent();
         }
     }
 }
