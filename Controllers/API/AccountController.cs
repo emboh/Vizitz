@@ -65,17 +65,6 @@ namespace Vizitz.Controllers.API
         {
             _logger.LogInformation($"Registration for {registerDTO.Email}");
 
-            // TODO : move role validation to RegisterDTO
-            string[] allowedRoles = { Role.Proprietor, Role.Visitor };
-
-            foreach (var role in registerDTO.Roles)
-            {
-                if (!allowedRoles.Contains(role, StringComparer.OrdinalIgnoreCase))
-                {
-                    return Problem($"Role {role} doesn't exist.", statusCode: StatusCodes.Status400BadRequest);
-                }
-            }
-
             var user = _mapper.Map<User>(registerDTO);
 
             user.UserName = registerDTO.Email;
@@ -133,11 +122,9 @@ namespace Vizitz.Controllers.API
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<UserDTO>> Profile([FromServices] IAuthManager authManager)
         {
-            string name = User.Identity?.Name;
-
             string userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            _logger.LogInformation($"Show profile for {name}");
+            _logger.LogInformation($"Show profile for {userName}");
 
             User user = await authManager.GetUserDetail(userName);
 
