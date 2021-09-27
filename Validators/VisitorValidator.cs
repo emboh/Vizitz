@@ -5,14 +5,6 @@ using Vizitz.Models;
 
 namespace Vizitz.Validators
 {
-    public class VisitorValidator : AbstractValidator<VisitorDTO>
-    {
-        public VisitorValidator()
-        {
-
-        }
-    }
-
     public class CreateVisitorValidator : AbstractValidator<CreateVisitorDTO>
     {
         public CreateVisitorValidator()

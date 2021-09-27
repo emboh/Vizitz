@@ -20,6 +20,7 @@ namespace Vizitz.Data
 
             CreateMap<User, AdminDTO>().ReverseMap();
             CreateMap<User, CreateAdminDTO>().ReverseMap();
+            CreateMap<User, UpdateAdminDTO>().ReverseMap();
 
             CreateMap<User, ProprietorDTO>().ReverseMap();
             CreateMap<User, CreateProprietorDTO>().ReverseMap();

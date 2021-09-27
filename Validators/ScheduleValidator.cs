@@ -4,14 +4,6 @@ using Vizitz.Models;
 
 namespace Vizitz.Validators
 {
-    public class ScheduleValidator : AbstractValidator<ScheduleDTO>
-    {
-        public ScheduleValidator()
-        {
-
-        }
-    }
-
     public class CreateScheduleValidator : AbstractValidator<CreateScheduleDTO>
     {
         public CreateScheduleValidator()

@@ -4,14 +4,6 @@ using Vizitz.Models;
 
 namespace Vizitz.Validators
 {
-    public class VisitValidator : AbstractValidator<VisitDTO>
-    {
-        public VisitValidator()
-        {
-
-        }
-    }
-
     public class CreateVisitValidator : AbstractValidator<CreateVisitDTO>
     {
         public CreateVisitValidator()

@@ -35,4 +35,15 @@ namespace Vizitz.Models
 
         public bool? IsActive { get; set; }
     }
+
+    public class UpdateAdminDTO
+    {
+        public string Name { get; set; }
+
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
 }

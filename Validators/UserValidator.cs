@@ -3,14 +3,6 @@ using Vizitz.Models;
 
 namespace Vizitz.Validators
 {
-    public class UserValidator : AbstractValidator<UserDTO>
-    {
-        public UserValidator()
-        {
-
-        }
-    }
-
     public class CreateUserValidator : AbstractValidator<CreateUserDTO>
     {
         public CreateUserValidator()
