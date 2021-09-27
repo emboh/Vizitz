@@ -108,7 +108,7 @@ namespace Vizitz
                     {
                         Log.Error($"Something went wrong in the {contextFeature.Error}");
 
-                        await context.Response.WriteAsync(new Error
+                        await context.Response.WriteAsync(new ErrorResponse
                         {
                             StatusCode = context.Response.StatusCode,
                             Message = "Internal Server Error. Please try again later."
