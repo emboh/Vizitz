@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Vizitz.Entities;
 using Vizitz.Models;
 
 namespace Vizitz.Validators
@@ -30,6 +31,9 @@ namespace Vizitz.Validators
 
             RuleFor(x => x.IsActive)
                 .Must(x => x == null || x == false || x == true);
+
+            RuleFor(x => x.Roles)
+                .Must(x => x.Contains(Role.Proprietor) || x.Contains(Role.Visitor));
         }
     }
 
@@ -54,6 +58,9 @@ namespace Vizitz.Validators
 
             RuleFor(x => x.IsActive)
                 .Must(x => x == null || x == false || x == true);
+
+            RuleFor(x => x.Roles)
+                .Must(x => x.Contains(Role.Proprietor) || x.Contains(Role.Visitor));
         }
     }
 }
